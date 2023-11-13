@@ -4,21 +4,29 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <!-- mybatis的全局配置文件 -->
 <configuration>
-    <properties resource="db.properties"/>
+    <properties resource="jdbc.properties"/>
+
+    <settings>
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>
+
     <!-- 配置mybatis的开发环境-->
     <environments default="development">
         <environment id="development">
-            <transactionManager type="JDBC"></transactionManager>
+            <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
-                <property name="driver" value="${mysql.driver}"/>
-                <property name="url" value="${mysql.url}"/>
-                <property name="username" value="${mysql.username}"/>
-                <property name="password" value="${mysql.password}"/>
+                <property name="driver" value="${driverClassName}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
             </dataSource>
         </environment>
     </environments>
     <!-- 导入mapper.xml映射文件-->
     <mappers>
-        <mapper resource=""/>
+        <mapper resource="mapper/TeacherMapper.xml"/>
+        <mapper resource="mapper/StudentMapper.xml"/>
+        <mapper resource="mapper/ScoreMapper.xml"/>
+        <mapper resource="mapper/PaperMapper.xml"/>
     </mappers>
 </configuration>
