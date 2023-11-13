@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSONObject;
 import edu.xmut.examsys.bean.Student;
 import edu.xmut.examsys.bean.Teacher;
 import edu.xmut.examsys.bean.dto.LoginDTO;
+import edu.xmut.examsys.bean.dto.RegisterDTO;
 import edu.xmut.examsys.bean.vo.LoginVO;
 import edu.xmut.examsys.service.StudentService;
 import edu.xmut.examsys.service.TeacherService;
@@ -71,5 +72,34 @@ public class CommonController {
             return R.ok(loginVO);
         }
         return R.fail("登录失败");
+    }
+
+
+    @RequestMapping(value = "/register", method = "post")
+    public R register(String json) {
+        RegisterDTO registerDTO = JSONObject.parseObject(json, RegisterDTO.class);
+        if (Objects.isNull(registerDTO)) {
+            return R.fail("注册失败");
+        }
+        String role = registerDTO.getRole();
+        if ("0".equals(role)) {
+            // 学生
+
+            return R.ok();
+        } else if ("1".equals(role)) {
+            // 教师
+            Teacher teacher = Teacher.builder()
+                    .tno(registerDTO.getUserId())
+                    .username(registerDTO.getUsername())
+                    .realName(registerDTO.getRealName())
+                    .password(registerDTO.getPassword())
+                    .phone(registerDTO.getPhone())
+                    .sex(Integer.valueOf(registerDTO.getSex()))
+                    .build();
+            teacherService.register(teacher);
+            return R.ok();
+        } else {
+            return R.fail("角色不存在！");
+        }
     }
 }

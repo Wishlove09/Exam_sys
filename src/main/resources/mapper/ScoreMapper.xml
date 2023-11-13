@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.xmut.examsys.mapper.ScoreMapper">
+
+    <resultMap id="BaseResultMap" type="edu.xmut.examsys.bean.Score">
+            <result property="sid" column="sid" jdbcType="BIGINT"/>
+            <result property="examId" column="exam_id" jdbcType="BIGINT"/>
+            <result property="examName" column="exam_name" jdbcType="VARCHAR"/>
+            <result property="sno" column="sno" jdbcType="BIGINT"/>
+            <result property="resultscore" column="resultScore" jdbcType="INTEGER"/>
+            <result property="submitData" column="submit_data" jdbcType="TIMESTAMP"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        sid,exam_id,exam_name,
+        sno,resultScore,submit_data,
+        create_time,update_time,is_deleted
+    </sql>
+</mapper>
