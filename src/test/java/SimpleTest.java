@@ -13,9 +13,9 @@ public class SimpleTest {
 
     @Test
     public void testMD5() throws NoSuchAlgorithmException {
-        String password = "123";
+        String password = "123456";
         MessageDigest messageDigest = MessageDigest.getInstance("md5");
-        messageDigest.update((password + "456").getBytes(StandardCharsets.UTF_8));
+        messageDigest.update((password + "salt").getBytes(StandardCharsets.UTF_8));
         byte[] digest = messageDigest.digest();
         int i = 0;
 
