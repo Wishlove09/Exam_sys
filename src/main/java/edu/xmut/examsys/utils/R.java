@@ -30,6 +30,14 @@ public class R<T> {
         return new R(200, "成功", data);
     }
 
+    public static R fail() {
+        return new R(400, "失败", null);
+    }
+
+    public static R fail(String message) {
+        return new R(400, message, null);
+    }
+
 
     public R code(Integer code) {
         this.setCode(code);
