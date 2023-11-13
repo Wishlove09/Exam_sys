@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.xmut.examsys.mapper.PaperMapper">
+
+    <resultMap id="BaseResultMap" type="edu.xmut.examsys.bean.Paper">
+            <result property="paperId" column="paper_id" jdbcType="BIGINT"/>
+            <result property="parerName" column="parer_name" jdbcType="VARCHAR"/>
+            <result property="questionType" column="question_type" jdbcType="INTEGER"/>
+            <result property="qid" column="qid" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        paper_id,parer_name,question_type,
+        qid,create_time,update_time,
+        is_deleted
+    </sql>
+</mapper>
