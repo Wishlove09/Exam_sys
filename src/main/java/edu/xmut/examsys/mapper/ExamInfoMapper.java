@@ -12,7 +12,7 @@ import java.util.List;
 * @Entity edu.xmut.examsys.bean.ExamInfo
 */
 public interface ExamInfoMapper {
-    List<ExamInfo> getAll();
+    List<ExamInfo> selectPage();
 }
 
 

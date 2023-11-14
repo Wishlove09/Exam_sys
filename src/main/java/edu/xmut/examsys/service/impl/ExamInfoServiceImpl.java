@@ -1,7 +1,9 @@
 package edu.xmut.examsys.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.Page;
 import edu.xmut.examsys.bean.ExamInfo;
+import edu.xmut.examsys.bean.dto.ExamInfoDTO;
 import edu.xmut.examsys.service.ExamInfoService;
 import edu.xmut.examsys.mapper.ExamInfoMapper;
 import fun.shuofeng.myspringmvc.annotaion.Service;
@@ -15,6 +17,11 @@ import fun.shuofeng.myspringmvc.annotaion.Service;
 @Service
 public class ExamInfoServiceImpl  implements ExamInfoService{
 
+    @Override
+    public Page<ExamInfoDTO> page(String page, String pageSize) {
+
+        return null;
+    }
 }
 
 
