@@ -2,13 +2,17 @@ package edu.xmut.examsys.bean;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import lombok.Builder;
 import lombok.Data;
 
 /**
  * 教师表
+ *
  * @TableName teacher
  */
 @Data
+@Builder
 public class Teacher implements Serializable {
     /**
      * 主键
