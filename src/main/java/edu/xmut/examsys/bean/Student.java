@@ -2,6 +2,8 @@ package edu.xmut.examsys.bean;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -9,6 +11,7 @@ import lombok.Data;
  * @TableName student
  */
 @Data
+@Builder
 public class Student implements Serializable {
     /**
      * 主键
@@ -43,7 +46,7 @@ public class Student implements Serializable {
     /**
      * 生日
      */
-    private Date birth;
+    private String birth;
 
     /**
      * 简介
