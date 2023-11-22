@@ -30,6 +30,10 @@ public class R<T> {
         return new R(200, "成功", data);
     }
 
+    public static <T> R ok(String message) {
+        return new R(200, message, null);
+    }
+
     public static R fail() {
         return new R(400, "失败", null);
     }
