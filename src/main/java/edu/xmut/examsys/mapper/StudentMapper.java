@@ -1,8 +1,11 @@
 package edu.xmut.examsys.mapper;
 
 
+import com.github.pagehelper.Page;
 import edu.xmut.examsys.bean.Student;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * @author shuofeng
@@ -13,6 +16,10 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface StudentMapper {
     Student getBySno(Long sno);
+
+    Page<Student> selectPage();
+
+    Integer insertStudent(Student student);
 
 }
 

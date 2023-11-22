@@ -14,5 +14,7 @@ public interface TeacherService {
 
     Teacher login(Long tno, String password);
 
+    Boolean register(Teacher teacher);
+
 
 }

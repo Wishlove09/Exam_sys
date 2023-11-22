@@ -17,6 +17,8 @@ public interface TeacherMapper {
 
     Teacher getByTno(Long tno);
 
+    Integer insertTeacher(Teacher teacher);
+
 
 }
 

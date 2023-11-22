@@ -2,6 +2,7 @@ package edu.xmut.examsys.service.impl;
 
 
 import edu.xmut.examsys.bean.Teacher;
+import edu.xmut.examsys.exception.GlobalException;
 import edu.xmut.examsys.mapper.TeacherMapper;
 import edu.xmut.examsys.service.TeacherService;
 import edu.xmut.examsys.utils.MD5Utils;
@@ -35,13 +36,13 @@ public class TeacherServiceImpl implements TeacherService {
     public Teacher login(Long tno, String password) {
         // 校验数据是否为非空，否则直接返回空
         if (StringUtils.isAnyBlank(String.valueOf(tno), password)) {
-            return null;
+            throw new GlobalException("账号或密码为空");
         }
         String encrypted;
         Teacher teacher = teacherMapper.getByTno(tno);
         // 如果找不到教师对象
         if (Objects.isNull(teacher)) {
-            return null;
+            throw new GlobalException("账号或密码错误");
         }
         try {
             // 使用MD5加密
@@ -53,8 +54,17 @@ public class TeacherServiceImpl implements TeacherService {
         if (encrypted.equals(teacher.getPassword())) {
             return teacher;
         } else {
+            throw new GlobalException("账号或密码错误");
+        }
+    }
+
+    @Override
+    public Boolean register(Teacher teacher) {
+        if (Objects.isNull(teacher)) {
             return null;
         }
+        Integer result = teacherMapper.insertTeacher(teacher);
+        return result > 0;
     }
 
 }

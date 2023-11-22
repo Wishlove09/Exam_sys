@@ -1,7 +1,11 @@
 package edu.xmut.examsys.service;
 
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import edu.xmut.examsys.bean.Student;
+import edu.xmut.examsys.bean.vo.PageVO;
+import edu.xmut.examsys.bean.vo.StudentVO;
 
 /**
 * @author shuofeng
@@ -10,4 +14,8 @@ import edu.xmut.examsys.bean.Student;
 */
 public interface StudentService {
     Student login(Long sno, String password);
+
+    PageVO<StudentVO> page(Integer pageNum, Integer pageSize);
+
+    Boolean register(Student student);
 }
