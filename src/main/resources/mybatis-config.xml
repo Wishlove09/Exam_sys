@@ -7,8 +7,20 @@
     <properties resource="jdbc.properties"/>
 
     <settings>
+        <!-- 配置SQL执行日志 -->
         <setting name="logImpl" value="STDOUT_LOGGING"/>
+        <!-- 开启mybatis下划线转驼峰-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
+
+    <!-- 配置插件 -->
+    <plugins>
+        <!--  开启分页插件-->
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <property name="helperDialect" value="mysql"/>
+            <property name="reasonable" value="true"/>
+        </plugin>
+    </plugins>
 
     <!-- 配置mybatis的开发环境-->
     <environments default="development">
@@ -28,5 +40,6 @@
         <mapper resource="mapper/StudentMapper.xml"/>
         <mapper resource="mapper/ScoreMapper.xml"/>
         <mapper resource="mapper/PaperMapper.xml"/>
+        <mapper resource="mapper/ClazzMapper.xml"/>
     </mappers>
 </configuration>
