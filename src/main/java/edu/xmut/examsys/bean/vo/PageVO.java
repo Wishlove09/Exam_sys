@@ -15,12 +15,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PageVO<T> {
+public class PageVO {
     private Integer pageNum;
 
     private Integer pageSize;
 
-    private Integer total;
+    private Long total;
 
-    private List<T> records;
+    private List records;
 }
