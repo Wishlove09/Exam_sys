@@ -6,4 +6,7 @@ package edu.xmut.examsys.constants;
  */
 public interface SystemConstant {
     String SALT = "salt";
+
+    String MISSING_ARGUMENT = "参数不能为空";
+
 }
