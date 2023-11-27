@@ -6,14 +6,17 @@ import edu.xmut.examsys.bean.Teacher;
 import edu.xmut.examsys.bean.dto.LoginDTO;
 import edu.xmut.examsys.bean.dto.RegisterDTO;
 import edu.xmut.examsys.bean.vo.LoginVO;
+import edu.xmut.examsys.exception.GlobalException;
 import edu.xmut.examsys.service.StudentService;
 import edu.xmut.examsys.service.TeacherService;
+import edu.xmut.examsys.utils.MD5Utils;
 import edu.xmut.examsys.utils.R;
 import fun.shuofeng.myspringmvc.annotaion.Autowired;
 import fun.shuofeng.myspringmvc.annotaion.Controller;
 import fun.shuofeng.myspringmvc.annotaion.RequestMapping;
 import org.apache.commons.lang3.StringUtils;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
 /**
@@ -45,10 +48,6 @@ public class CommonController {
         if ("0".equals(role)) {
             // 学生
             student = studentService.login(userId, password);
-            // 如果返回空对象，则证明账号密码有误
-            if (Objects.isNull(student)) {
-                return R.fail("账号密码错误");
-            }
             LoginVO loginVO = LoginVO.builder()
                     .userId(student.getSno())
                     .username(student.getUsername())
@@ -59,10 +58,6 @@ public class CommonController {
         } else if ("1".equals(role)) {
             // 教师
             teacher = teacherService.login(userId, password);
-            // 如果返回空对象，则证明账号密码有误
-            if (Objects.isNull(teacher)) {
-                return R.fail("账号密码错误");
-            }
             LoginVO loginVO = LoginVO.builder()
                     .userId(teacher.getTno())
                     .username(teacher.getUsername())
@@ -76,28 +71,40 @@ public class CommonController {
 
 
     @RequestMapping(value = "/register", method = "post")
-    public R register(String json) {
+    public R register(String json) throws NoSuchAlgorithmException {
         RegisterDTO registerDTO = JSONObject.parseObject(json, RegisterDTO.class);
         if (Objects.isNull(registerDTO)) {
-            return R.fail("注册失败");
+            throw new GlobalException("注册信息为空");
         }
         String role = registerDTO.getRole();
         if ("0".equals(role)) {
             // 学生
-
-            return R.ok();
+            Student student = Student.builder()
+                    .sno(registerDTO.getUserId())
+                    .sex(Integer.valueOf(registerDTO.getSex()))
+                    .username(registerDTO.getUsername())
+                    .password(MD5Utils.toMD5(registerDTO.getPassword()))
+                    .realName(registerDTO.getRealName())
+                    .phone(registerDTO.getPhone())
+                    .build();
+            if (!studentService.register(student)) {
+                return R.fail("注册失败");
+            }
+            return R.ok("注册成功");
         } else if ("1".equals(role)) {
             // 教师
             Teacher teacher = Teacher.builder()
                     .tno(registerDTO.getUserId())
                     .username(registerDTO.getUsername())
                     .realName(registerDTO.getRealName())
-                    .password(registerDTO.getPassword())
+                    .password(MD5Utils.toMD5(registerDTO.getPassword()))
                     .phone(registerDTO.getPhone())
                     .sex(Integer.valueOf(registerDTO.getSex()))
                     .build();
-            teacherService.register(teacher);
-            return R.ok();
+            if (!teacherService.register(teacher)) {
+                return R.fail("注册失败");
+            }
+            return R.ok("注册成功");
         } else {
             return R.fail("角色不存在！");
         }

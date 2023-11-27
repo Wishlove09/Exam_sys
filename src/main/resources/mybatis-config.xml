@@ -41,5 +41,8 @@
         <mapper resource="mapper/ScoreMapper.xml"/>
         <mapper resource="mapper/PaperMapper.xml"/>
         <mapper resource="mapper/ClazzMapper.xml"/>
+        <mapper resource="mapper/FillQuestionMapper.xml"/>
+        <mapper resource="mapper/MOrSQuestionMapper.xml"/>
+        <mapper resource="mapper/JudgeQuestionMapper.xml"/>
     </mappers>
 </configuration>

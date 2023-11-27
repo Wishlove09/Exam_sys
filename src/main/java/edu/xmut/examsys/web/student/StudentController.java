@@ -25,6 +25,8 @@ public class StudentController {
     public R page(String json) {
         PageDTO pageDTO = JSONObject.parseObject(json, PageDTO.class);
         PageVO<StudentVO> page = studentService.page(pageDTO.getPageNum(), pageDTO.getPageSize());
+
+
         return R.ok(page);
     }
 }
