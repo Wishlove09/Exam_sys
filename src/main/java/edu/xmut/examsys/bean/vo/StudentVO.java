@@ -13,7 +13,7 @@ import java.util.Date;
 @Builder
 public class StudentVO {
 
-    private Long sno;
+    private Long id;
 
 
     /**
