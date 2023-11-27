@@ -37,6 +37,30 @@
                          role, phone)
         values (#{id}, #{username}, #{sex}, #{realName}, #{password}, #{role}, #{phone});
     </insert>
+    <update id="update">
+        update user
+        <set>
+            <if test="sex !=null">
+                sex = #{sex},
+            </if>
+            <if test="realName !=null">
+                real_name = #{realName},
+            </if>
+            <if test="email !=null">
+                email = #{email},
+            </if>
+            <if test="birth !=null">
+                birth = #{birth},
+            </if>
+            <if test="phone !=null">
+                phone = #{phone},
+            </if>
+            <if test="status !=null">
+                `status` = #{status}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
 
     <select id="selectById" resultType="edu.xmut.examsys.bean.User">
         select *

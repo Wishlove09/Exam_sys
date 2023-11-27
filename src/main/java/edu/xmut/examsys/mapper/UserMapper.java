@@ -19,7 +19,7 @@ public interface UserMapper {
     Page<User> selectByRoleUser(Integer role);
 
 
-
+    Integer update(User user);
 }
 
 
