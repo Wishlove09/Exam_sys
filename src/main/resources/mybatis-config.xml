@@ -37,8 +37,8 @@
     <!-- 导入mapper.xml映射文件-->
     <mappers>
         <mapper resource="mapper/UserMapper.xml"/>
-<!--        <mapper resource="mapper/ScoreMapper.xml"/>-->
-<!--        <mapper resource="mapper/PaperMapper.xml"/>-->
-<!--        <mapper resource="mapper/ClazzMapper.xml"/>-->
+        <mapper resource="mapper/ClazzMapper.xml"/>
+        <!--        <mapper resource="mapper/ScoreMapper.xml"/>-->
+        <!--        <mapper resource="mapper/PaperMapper.xml"/>-->
     </mappers>
 </configuration>

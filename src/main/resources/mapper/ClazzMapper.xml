@@ -17,4 +17,18 @@
         id,class_name,dept_id,
         create_time,update_time,is_deleted
     </sql>
+    <select id="selectById" resultType="edu.xmut.examsys.bean.ClazzStudent">
+        select *
+        from clazz_student
+        where user_id = #{userId}
+    </select>
+    <select id="selectClazzById" resultType="edu.xmut.examsys.bean.Clazz">
+        select *
+        from clazz
+        where id = #{clazzId}
+    </select>
+    <select id="selectAll" resultType="edu.xmut.examsys.bean.Clazz">
+        select *
+        from clazz
+    </select>
 </mapper>
