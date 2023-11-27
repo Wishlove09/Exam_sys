@@ -38,6 +38,11 @@ public class StudentVO {
     private String clazzName;
 
     /**
+     * 班级id
+     */
+    private Long clazzId;
+
+    /**
      * 生日
      */
     private String birth;
