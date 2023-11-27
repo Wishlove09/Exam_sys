@@ -14,8 +14,12 @@ public class LoginVO {
 
     private Long userId;
 
-    private String role;
+    private Integer role;
 
     private String avatar;
+
+    private Integer sex;
+
+    private String realName;
 
 }
