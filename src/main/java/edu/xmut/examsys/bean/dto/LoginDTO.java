@@ -10,6 +10,6 @@ import lombok.Data;
 public class LoginDTO {
     private Long userId;
     private String password;
-    private String role;
+    private Integer role;
 
 }
