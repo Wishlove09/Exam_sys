@@ -2,6 +2,7 @@ package edu.xmut.examsys.bean.vo;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -10,7 +11,7 @@ import java.util.Date;
  * @date 2023-11-13 23:59
  */
 @Data
-@Builder
+@NoArgsConstructor
 public class StudentVO {
 
     private Long id;
