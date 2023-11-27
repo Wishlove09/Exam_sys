@@ -2,6 +2,7 @@ package edu.xmut.examsys.mapper;
 
 import edu.xmut.examsys.bean.Clazz;
 import edu.xmut.examsys.bean.ClazzStudent;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -13,12 +14,17 @@ import java.util.List;
  */
 public interface ClazzMapper {
 
-    ClazzStudent selectById(Long userId);
+    ClazzStudent selecCStById(Long userId);
 
     Clazz selectClazzById(Long clazzId);
 
     List<Clazz> selectAll();
 
+    Integer insertCS(@Param("clazzId") Long clazzId,
+                     @Param("userId") Long id);
+
+    Integer updateCS(@Param("clazzId") Long clazzId,
+                     @Param("userId") Long id);
 }
 
 

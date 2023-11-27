@@ -5,19 +5,28 @@
 <mapper namespace="edu.xmut.examsys.mapper.ClazzMapper">
 
     <resultMap id="BaseResultMap" type="edu.xmut.examsys.bean.Clazz">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="className" column="class_name" jdbcType="VARCHAR"/>
-            <result property="deptId" column="dept_id" jdbcType="INTEGER"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-            <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="className" column="class_name" jdbcType="VARCHAR"/>
+        <result property="deptId" column="dept_id" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,class_name,dept_id,
         create_time,update_time,is_deleted
     </sql>
-    <select id="selectById" resultType="edu.xmut.examsys.bean.ClazzStudent">
+    <insert id="insertCS">
+        insert into clazz_student(user_id, clazz_id)
+        values (#{userId}, #{clazzId})
+    </insert>
+    <update id="updateCS">
+        update clazz_student
+        set clazz_id= #{clazzId}
+        where user_id = #{userId}
+    </update>
+    <select id="selecCStById" resultType="edu.xmut.examsys.bean.ClazzStudent">
         select *
         from clazz_student
         where user_id = #{userId}
