@@ -3,6 +3,8 @@ package edu.xmut.examsys.web.teacher;
 import com.alibaba.fastjson2.JSONObject;
 import edu.xmut.examsys.bean.Clazz;
 import edu.xmut.examsys.bean.dto.ClazzDTO;
+import edu.xmut.examsys.bean.dto.PageDTO;
+import edu.xmut.examsys.bean.vo.PageVO;
 import edu.xmut.examsys.exception.GlobalException;
 import edu.xmut.examsys.service.ClazzService;
 import edu.xmut.examsys.utils.R;
@@ -30,6 +32,17 @@ public class ClazzController {
     public R getAll() {
         List<Clazz> list = clazzService.getAll();
         return R.ok(list);
+    }
+
+    @RequestMapping(value = "/pages", method = "post")
+    public R pages(String json) {
+        if (StringUtils.isBlank(json)) {
+            throw new GlobalException(MISSING_ARGUMENT);
+        }
+        PageDTO pageDTO = JSONObject.parseObject(json, PageDTO.class);
+        PageVO pageVO = clazzService.pages(pageDTO);
+
+        return R.ok(pageVO);
     }
 
     @RequestMapping(value = "/add", method = "post")
