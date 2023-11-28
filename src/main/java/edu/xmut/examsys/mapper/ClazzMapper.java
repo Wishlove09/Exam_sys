@@ -25,6 +25,8 @@ public interface ClazzMapper {
 
     Integer updateCS(@Param("clazzId") Long clazzId,
                      @Param("userId") Long id);
+
+    Integer insertClazz(Clazz clazz);
 }
 
 

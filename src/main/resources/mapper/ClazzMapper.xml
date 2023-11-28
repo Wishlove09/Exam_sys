@@ -21,6 +21,10 @@
         insert into clazz_student(user_id, clazz_id)
         values (#{userId}, #{clazzId})
     </insert>
+    <insert id="insertClazz">
+        insert into clazz(id, class_name)
+        values (#{id}, #{className})
+    </insert>
     <update id="updateCS">
         update clazz_student
         set clazz_id= #{clazzId}

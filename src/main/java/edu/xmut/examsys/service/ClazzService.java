@@ -1,6 +1,7 @@
 package edu.xmut.examsys.service;
 
 import edu.xmut.examsys.bean.Clazz;
+import edu.xmut.examsys.bean.dto.ClazzDTO;
 
 import java.util.List;
 
@@ -10,4 +11,6 @@ import java.util.List;
  */
 public interface ClazzService {
     List<Clazz> getAll();
+
+    Boolean add(ClazzDTO clazzDTO);
 }
