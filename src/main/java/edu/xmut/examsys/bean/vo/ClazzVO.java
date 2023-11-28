@@ -1,7 +1,9 @@
 package edu.xmut.examsys.bean.vo;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author 朔风
@@ -9,6 +11,8 @@ import lombok.Data;
  */
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ClazzVO {
     /**
      * 班级id
