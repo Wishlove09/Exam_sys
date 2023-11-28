@@ -1,5 +1,6 @@
 package edu.xmut.examsys.mapper;
 
+import com.github.pagehelper.Page;
 import edu.xmut.examsys.bean.Clazz;
 import edu.xmut.examsys.bean.ClazzStudent;
 import org.apache.ibatis.annotations.Param;
@@ -27,6 +28,11 @@ public interface ClazzMapper {
                      @Param("userId") Long id);
 
     Integer insertClazz(Clazz clazz);
+
+    Page<Clazz> pages();
+
+    Integer countByClazzId(Integer clazzId);
+
 }
 
 

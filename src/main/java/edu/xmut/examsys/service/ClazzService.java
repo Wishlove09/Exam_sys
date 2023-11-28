@@ -2,6 +2,8 @@ package edu.xmut.examsys.service;
 
 import edu.xmut.examsys.bean.Clazz;
 import edu.xmut.examsys.bean.dto.ClazzDTO;
+import edu.xmut.examsys.bean.dto.PageDTO;
+import edu.xmut.examsys.bean.vo.PageVO;
 
 import java.util.List;
 
@@ -13,4 +15,6 @@ public interface ClazzService {
     List<Clazz> getAll();
 
     Boolean add(ClazzDTO clazzDTO);
+
+    PageVO pages(PageDTO pageDTO);
 }

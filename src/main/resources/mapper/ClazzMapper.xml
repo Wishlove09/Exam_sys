@@ -44,4 +44,13 @@
         select *
         from clazz
     </select>
+    <select id="pages" resultType="edu.xmut.examsys.bean.Clazz">
+        select *
+        from clazz
+    </select>
+    <select id="countByClazzId" resultType="java.lang.Integer">
+        select count(*)
+        from clazz_student
+        where clazz_id = #{clazzId}
+    </select>
 </mapper>
