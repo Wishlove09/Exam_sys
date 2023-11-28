@@ -13,6 +13,7 @@ import fun.shuofeng.myspringmvc.annotaion.Controller;
 import fun.shuofeng.myspringmvc.annotaion.RequestMapping;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static edu.xmut.examsys.constants.SystemConstant.MISSING_ARGUMENT;
@@ -52,6 +53,14 @@ public class ClazzController {
         }
         ClazzDTO clazzDTO = JSONObject.parseObject(json, ClazzDTO.class);
         Boolean result = clazzService.add(clazzDTO);
+
+        return result ? R.ok("添加成功") : R.fail();
+    }
+
+    @RequestMapping("/delete")
+    public R delete(HttpServletRequest request) {
+        Long id = Long.valueOf(request.getParameter("id"));
+        Boolean result = clazzService.deleteById(id);
 
         return result ? R.ok() : R.fail();
     }
