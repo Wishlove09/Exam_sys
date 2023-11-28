@@ -15,4 +15,5 @@ public class ClazzDTO {
 
     private String className;
     private Long classId;
+    private Integer deptId;
 }
