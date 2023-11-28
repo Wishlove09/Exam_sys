@@ -19,4 +19,12 @@ public class ClazzVO {
      * 班级名称
      */
     private String className;
+    /**
+     * 院系名称
+     */
+    private String deptName;
+    /**
+     * 人数统计
+     */
+    private Integer count;
 }
