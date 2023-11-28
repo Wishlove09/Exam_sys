@@ -22,8 +22,8 @@
         values (#{userId}, #{clazzId})
     </insert>
     <insert id="insertClazz">
-        insert into clazz(id, class_name)
-        values (#{id}, #{className})
+        insert into clazz(id, class_name, dept_id)
+        values (#{id}, #{className}, #{deptId})
     </insert>
     <update id="updateCS">
         update clazz_student

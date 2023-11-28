@@ -18,6 +18,7 @@ import fun.shuofeng.myspringmvc.annotaion.Service;
 import org.apache.ibatis.session.SqlSession;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -49,6 +50,7 @@ public class ClazzServiceImpl implements ClazzService {
         Clazz clazz = new Clazz();
         clazz.setClassName(clazzDTO.getClassName());
         clazz.setId(clazzDTO.getClassId());
+        clazz.setDeptId(clazzDTO.getDeptId());
         Integer result = clazzMapper.insertClazz(clazz);
         return result > 0;
     }
@@ -59,14 +61,16 @@ public class ClazzServiceImpl implements ClazzService {
         Page<Clazz> clazzPage = clazzMapper.pages();
         List<ClazzVO> collect = clazzPage.getResult().stream()
                 .map(clazz -> {
-                    Department department = departmentMapper.selectById(clazz.getDeptId());
                     Integer count = clazzMapper.countByClazzId(Math.toIntExact(clazz.getId()));
-                    return ClazzVO.builder()
-                            .classId(clazz.getId())
-                            .className(clazz.getClassName())
-                            .deptName(department.getDeptName())
-                            .count(count)
-                            .build();
+                    Department department = departmentMapper.selectById(clazz.getDeptId());
+                    ClazzVO clazzVO = new ClazzVO();
+                    clazzVO.setCount(count);
+                    clazzVO.setClassId(clazz.getId());
+                    clazzVO.setClassName(clazz.getClassName());
+                    if (Objects.nonNull(department)) {
+                        clazzVO.setDeptName(department.getDeptName());
+                    }
+                    return clazzVO;
                 }).collect(Collectors.toList());
 
         return PageVO.builder()
