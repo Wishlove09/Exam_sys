@@ -30,7 +30,12 @@
         set clazz_id= #{clazzId}
         where user_id = #{userId}
     </update>
-    <select id="selecCStById" resultType="edu.xmut.examsys.bean.ClazzStudent">
+    <delete id="deleteById">
+        delete
+        from clazz
+        where id = #{id}
+    </delete>
+    <select id="selectCStById" resultType="edu.xmut.examsys.bean.ClazzStudent">
         select *
         from clazz_student
         where user_id = #{userId}

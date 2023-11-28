@@ -9,6 +9,7 @@ import edu.xmut.examsys.bean.dto.ClazzDTO;
 import edu.xmut.examsys.bean.dto.PageDTO;
 import edu.xmut.examsys.bean.vo.ClazzVO;
 import edu.xmut.examsys.bean.vo.PageVO;
+import edu.xmut.examsys.exception.GlobalException;
 import edu.xmut.examsys.mapper.ClazzMapper;
 import edu.xmut.examsys.mapper.DepartmentMapper;
 import edu.xmut.examsys.mapper.UserMapper;
@@ -61,7 +62,7 @@ public class ClazzServiceImpl implements ClazzService {
         Page<Clazz> clazzPage = clazzMapper.pages();
         List<ClazzVO> collect = clazzPage.getResult().stream()
                 .map(clazz -> {
-                    Integer count = clazzMapper.countByClazzId(Math.toIntExact(clazz.getId()));
+                    Integer count = clazzMapper.countByClazzId(clazz.getId());
                     Department department = departmentMapper.selectById(clazz.getDeptId());
                     ClazzVO clazzVO = new ClazzVO();
                     clazzVO.setCount(count);
@@ -79,5 +80,16 @@ public class ClazzServiceImpl implements ClazzService {
                 .total(clazzPage.getTotal())
                 .records(collect)
                 .build();
+    }
+
+    @Override
+    public Boolean deleteById(Long id) {
+        Integer count = clazzMapper.countByClazzId(id);
+        if (count > 0) {
+            throw new GlobalException("无法删除该班级，因为存在学生！");
+        }
+        Integer result = clazzMapper.deleteById(id);
+
+        return result > 0;
     }
 }

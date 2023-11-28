@@ -58,7 +58,7 @@ public class StudentServiceImpl implements StudentService {
                     studentVO.setPhone(user.getPhone());
                     studentVO.setStatus(user.getStatus());
 
-                    ClazzStudent clazzStudent = clazzMapper.selecCStById(user.getId());
+                    ClazzStudent clazzStudent = clazzMapper.selectCStById(user.getId());
                     if (Objects.nonNull(clazzStudent)) {
                         Clazz clazz = clazzMapper.selectClazzById(clazzStudent.getClazzId());
                         studentVO.setClazzName(clazz.getClassName());
@@ -82,7 +82,7 @@ public class StudentServiceImpl implements StudentService {
         studentVO.setSex(user.getSex());
         studentVO.setRealName(user.getRealName());
         studentVO.setEmail(user.getEmail());
-        ClazzStudent clazzStudent = clazzMapper.selecCStById(user.getId());
+        ClazzStudent clazzStudent = clazzMapper.selectCStById(user.getId());
         if (Objects.nonNull(clazzStudent)) {
             studentVO.setClazzId(clazzStudent.getClazzId());
         }
@@ -104,7 +104,7 @@ public class StudentServiceImpl implements StudentService {
         // 更新班级
         Long clazzId = studentDTO.getClazzId();
         Integer r2;
-        if (Objects.isNull(clazzMapper.selecCStById(studentDTO.getId()))) {
+        if (Objects.isNull(clazzMapper.selectCStById(studentDTO.getId()))) {
             r2 = clazzMapper.insertCS(clazzId, studentDTO.getId());
         } else {
             r2 = clazzMapper.updateCS(clazzId, studentDTO.getId());

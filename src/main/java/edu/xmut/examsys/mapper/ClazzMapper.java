@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface ClazzMapper {
 
-    ClazzStudent selecCStById(Long userId);
+    ClazzStudent selectCStById(Long userId);
 
     Clazz selectClazzById(Long clazzId);
 
@@ -31,8 +31,9 @@ public interface ClazzMapper {
 
     Page<Clazz> pages();
 
-    Integer countByClazzId(Integer clazzId);
+    Integer countByClazzId(Long clazzId);
 
+    Integer deleteById(Long id);
 }
 
 

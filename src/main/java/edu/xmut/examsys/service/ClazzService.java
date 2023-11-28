@@ -17,4 +17,6 @@ public interface ClazzService {
     Boolean add(ClazzDTO clazzDTO);
 
     PageVO pages(PageDTO pageDTO);
+
+    Boolean deleteById(Long id);
 }
