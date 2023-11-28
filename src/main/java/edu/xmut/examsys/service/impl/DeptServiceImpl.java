@@ -6,6 +6,8 @@ import edu.xmut.examsys.service.DeptService;
 import edu.xmut.examsys.utils.SqlSessionFactoryUtils;
 import fun.shuofeng.myspringmvc.annotaion.Service;
 
+import java.util.List;
+
 /**
  * @author 朔风
  * @date 2023-11-28 14:56
@@ -22,5 +24,10 @@ public class DeptServiceImpl implements DeptService {
     @Override
     public Department getById(Integer id) {
         return departmentMapper.selectById(id);
+    }
+
+    @Override
+    public List<Department> getAll() {
+        return departmentMapper.selectAll();
     }
 }
