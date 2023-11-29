@@ -2,6 +2,7 @@ package edu.xmut.examsys.web.teacher;
 
 import com.alibaba.fastjson2.JSONObject;
 import edu.xmut.examsys.bean.dto.PageDTO;
+import edu.xmut.examsys.bean.dto.SingleQuestionDTO;
 import edu.xmut.examsys.bean.vo.PageVO;
 import edu.xmut.examsys.exception.GlobalException;
 import edu.xmut.examsys.service.QuestionService;
@@ -11,6 +12,11 @@ import fun.shuofeng.myspringmvc.annotaion.Controller;
 import fun.shuofeng.myspringmvc.annotaion.RequestMapping;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
+
+import java.util.Objects;
+
+import static edu.xmut.examsys.constants.SystemConstant.ADD_FAIL;
 import static edu.xmut.examsys.constants.SystemConstant.MISSING_ARGUMENT;
 
 /**
@@ -35,5 +41,31 @@ public class QuestionController {
 
         return R.ok(pageVO);
 
+    }
+
+    @RequestMapping(value = "/add", method = "post")
+    public R addQuestion(String json, HttpServletRequest request) {
+        String action = request.getParameter("action");
+        if (StringUtils.isBlank(action)) {
+            throw new GlobalException(MISSING_ARGUMENT);
+        }
+        Integer result = 0;
+        switch (action) {
+            case "single":
+                SingleQuestionDTO singleQuestionDTO = JSONObject.parseObject(json, SingleQuestionDTO.class);
+                result = questionService.adSingleQuestion(singleQuestionDTO);
+                break;
+            case "multi":
+
+                break;
+            case "judge":
+                break;
+            case "fill":
+                break;
+            default:
+                return R.fail(ADD_FAIL);
+        }
+
+        return result > 0 ? R.ok() : R.fail();
     }
 }
