@@ -10,4 +10,5 @@ import lombok.Data;
 public class PageDTO {
     Integer pageNum;
     Integer pageSize;
+    String search;
 }
