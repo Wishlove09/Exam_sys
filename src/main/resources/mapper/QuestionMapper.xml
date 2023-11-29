@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.xmut.examsys.mapper.QuestionMapper">
+
+    <resultMap id="BaseResultMap" type="edu.xmut.examsys.bean.Question">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="type" column="type" jdbcType="TINYINT"/>
+            <result property="level" column="level" jdbcType="INTEGER"/>
+            <result property="image" column="image" jdbcType="VARCHAR"/>
+            <result property="optionId" column="option_id" jdbcType="VARCHAR"/>
+            <result property="content" column="content" jdbcType="VARCHAR"/>
+            <result property="creator" column="creator" jdbcType="BIGINT"/>
+            <result property="analysis" column="analysis" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,type,level,
+        image,option_id,content,
+        creator,analysis,create_time,
+        update_time,is_deleted
+    </sql>
+    <select id="pages" resultType="edu.xmut.examsys.bean.Question">
+        select *
+        from question
+        <where>
+            <if test="search !=null ">
+                content like concat('%', #{search}, '%')
+            </if>
+        </where>
+        order by update_time
+    </select>
+</mapper>
