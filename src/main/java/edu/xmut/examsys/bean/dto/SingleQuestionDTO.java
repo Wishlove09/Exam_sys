@@ -1,5 +1,6 @@
 package edu.xmut.examsys.bean.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.util.List;
  */
 @NoArgsConstructor
 @Data
+@AllArgsConstructor
 public class SingleQuestionDTO {
 
     private Integer level;
@@ -18,13 +20,7 @@ public class SingleQuestionDTO {
     private String content;
     private String analysis;
     private String image;
-    private List<OptionList> optionList;
+    private List<OptionListDTO> optionList;
 
-    @NoArgsConstructor
-    @Data
-    private static class OptionList {
-        private String title;
-        private String content;
-        private String image;
-    }
+
 }
