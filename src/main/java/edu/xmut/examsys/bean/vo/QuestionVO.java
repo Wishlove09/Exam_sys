@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 @Builder
 public class QuestionVO {
-    private String qid;
+    private String id;
     private String content;
     private Integer type;
     private String realName;
