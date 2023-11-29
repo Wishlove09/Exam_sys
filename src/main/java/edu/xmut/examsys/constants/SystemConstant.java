@@ -9,4 +9,6 @@ public interface SystemConstant {
 
     String MISSING_ARGUMENT = "参数不能为空";
 
+    String ADD_FAIL = "添加失败";
+
 }
