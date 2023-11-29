@@ -1,7 +1,6 @@
 package edu.xmut.examsys.mapper;
 
 import edu.xmut.examsys.bean.QuestionOption;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
 * @author shuofeng
@@ -9,7 +8,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2023-11-29 11:46:42
 * @Entity edu.xmut.examsys.bean.QuestionOption
 */
-public interface QuestionOptionMapper extends BaseMapper<QuestionOption> {
+public interface QuestionOptionMapper  {
+
+    Integer addOption(QuestionOption questionOption);
+
 
 }
 

@@ -5,14 +5,14 @@
 <mapper namespace="edu.xmut.examsys.mapper.QuestionOptionMapper">
 
     <resultMap id="BaseResultMap" type="edu.xmut.examsys.bean.QuestionOption">
-            <id property="id" column="id" jdbcType="VARCHAR"/>
-            <result property="qid" column="qid" jdbcType="VARCHAR"/>
-            <result property="isRight" column="is_right" jdbcType="TINYINT"/>
-            <result property="image" column="image" jdbcType="VARCHAR"/>
-            <result property="content" column="content" jdbcType="VARCHAR"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-            <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="qid" column="qid" jdbcType="VARCHAR"/>
+        <result property="isRight" column="is_right" jdbcType="TINYINT"/>
+        <result property="image" column="image" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -20,4 +20,8 @@
         image,content,create_time,
         update_time,is_deleted
     </sql>
+    <insert id="addOption" useGeneratedKeys="true" keyProperty="id">
+        insert into question_option(id, qid, is_right, image, content)
+        values (#{id}, #{qid}, #{isRight}, #{image}, #{content})
+    </insert>
 </mapper>

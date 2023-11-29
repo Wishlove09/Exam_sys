@@ -10,12 +10,12 @@ import edu.xmut.examsys.bean.dto.SingleQuestionDTO;
 import edu.xmut.examsys.bean.vo.PageVO;
 import edu.xmut.examsys.bean.vo.QuestionVO;
 import edu.xmut.examsys.mapper.QuestionMapper;
+import edu.xmut.examsys.mapper.QuestionOptionMapper;
 import edu.xmut.examsys.mapper.UserMapper;
 import edu.xmut.examsys.service.QuestionService;
 import edu.xmut.examsys.utils.SqlSessionFactoryUtils;
 import fun.shuofeng.myspringmvc.annotaion.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,10 +28,12 @@ public class QuestionServiceImpl implements QuestionService {
 
 
     private QuestionMapper questionMapper;
+    private QuestionOptionMapper questionOptionMapper;
     private UserMapper userMapper;
 
     public QuestionServiceImpl() {
         questionMapper = SqlSessionFactoryUtils.openSession(true).getMapper(QuestionMapper.class);
+        questionOptionMapper = SqlSessionFactoryUtils.openSession(true).getMapper(QuestionOptionMapper.class);
         userMapper = SqlSessionFactoryUtils.openSession(true).getMapper(UserMapper.class);
     }
 
@@ -62,7 +64,14 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Integer adSingleQuestion(SingleQuestionDTO singleQuestionDTO) {
-        
+
+        // 1.添加试题选项
+
+
+        // 2.添加试题主体
+
+
+
 
         return null;
     }
