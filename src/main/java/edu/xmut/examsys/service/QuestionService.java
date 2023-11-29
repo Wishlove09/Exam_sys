@@ -1,6 +1,7 @@
 package edu.xmut.examsys.service;
 
 import edu.xmut.examsys.bean.dto.PageDTO;
+import edu.xmut.examsys.bean.dto.SingleQuestionDTO;
 import edu.xmut.examsys.bean.vo.PageVO;
 
 /**
@@ -9,4 +10,6 @@ import edu.xmut.examsys.bean.vo.PageVO;
  */
 public interface QuestionService {
     PageVO pages(PageDTO pageDTO);
+
+    Integer adSingleQuestion(SingleQuestionDTO singleQuestionDTO);
 }

@@ -6,6 +6,7 @@ import com.github.pagehelper.PageHelper;
 import edu.xmut.examsys.bean.Question;
 import edu.xmut.examsys.bean.User;
 import edu.xmut.examsys.bean.dto.PageDTO;
+import edu.xmut.examsys.bean.dto.SingleQuestionDTO;
 import edu.xmut.examsys.bean.vo.PageVO;
 import edu.xmut.examsys.bean.vo.QuestionVO;
 import edu.xmut.examsys.mapper.QuestionMapper;
@@ -57,5 +58,12 @@ public class QuestionServiceImpl implements QuestionService {
                 .total(questionPage.getTotal())
                 .records(collect)
                 .build();
+    }
+
+    @Override
+    public Integer adSingleQuestion(SingleQuestionDTO singleQuestionDTO) {
+        
+
+        return null;
     }
 }
