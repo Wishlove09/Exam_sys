@@ -194,4 +194,34 @@ public class QuestionServiceImpl implements QuestionService {
         sqlSession.commit();
         return result > 0;
     }
+
+    @Override
+    public Boolean addFillQuestion(FillQuestionDTO fillQuestionDTO) {
+
+        String qid = SnowflakeUtils.nextIdStr();
+        Question question = new Question();
+        question.setType(3);
+        question.setLevel(fillQuestionDTO.getLevel());
+        question.setImage(fillQuestionDTO.getImage());
+        question.setOptionId(fillQuestionDTO.getAnalysis());
+        question.setContent(fillQuestionDTO.getContent());
+        question.setCreator(444444L);
+        question.setAnalysis(fillQuestionDTO.getAnalysis());
+        question.setId(qid);
+
+        String oid = SnowflakeUtils.nextIdStr();
+        QuestionOption questionOption = new QuestionOption();
+        questionOption.setId(oid);
+        questionOption.setQid(qid);
+        questionOption.setIsRight(1);
+        questionOption.setContent(fillQuestionDTO.getAnswer());
+        question.setOptionId(oid);
+
+        // 插入数据库
+        Integer r1 = questionOptionMapper.addOption(questionOption);
+        Integer r2 = questionMapper.insert(question);
+
+        sqlSession.commit();
+        return r1 > 0 && r2 > 0;
+    }
 }

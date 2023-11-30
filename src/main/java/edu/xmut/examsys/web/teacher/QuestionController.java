@@ -1,10 +1,7 @@
 package edu.xmut.examsys.web.teacher;
 
 import com.alibaba.fastjson2.JSONObject;
-import edu.xmut.examsys.bean.dto.JudgeQuestionDTO;
-import edu.xmut.examsys.bean.dto.MultiQuestionDTO;
-import edu.xmut.examsys.bean.dto.PageDTO;
-import edu.xmut.examsys.bean.dto.SingleQuestionDTO;
+import edu.xmut.examsys.bean.dto.*;
 import edu.xmut.examsys.bean.vo.PageVO;
 import edu.xmut.examsys.exception.GlobalException;
 import edu.xmut.examsys.service.QuestionService;
@@ -65,6 +62,8 @@ public class QuestionController {
                 result = questionService.addJudgeQuestion(judgeQuestionDTO);
                 break;
             case "fill":
+                FillQuestionDTO fillQuestionDTO = JSONObject.parseObject(json, FillQuestionDTO.class);
+                result = questionService.addFillQuestion(fillQuestionDTO);
                 break;
             default:
                 return R.fail(ADD_FAIL);
