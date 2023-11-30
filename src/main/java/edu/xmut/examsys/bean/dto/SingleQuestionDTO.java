@@ -20,7 +20,7 @@ public class SingleQuestionDTO {
     private String content;
     private String analysis;
     private String image;
-    private List<OptionListDTO> optionList;
+    private List<OptionDTO> optionList;
 
 
 }
