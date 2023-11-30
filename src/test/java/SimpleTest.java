@@ -50,6 +50,8 @@ public class SimpleTest {
 
     @Test
     public void snowflakeUtil() {
+        byte b = (byte) 999;
+        System.out.println(b);
     }
 
 
