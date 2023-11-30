@@ -16,6 +16,8 @@ public class MultiQuestionDTO {
     private List<String> rightAnswer;
     private String content;
     private String analysis;
+    private Integer level;
+    private String image;
     private List<OptionDTO> optionList;
 
 }
