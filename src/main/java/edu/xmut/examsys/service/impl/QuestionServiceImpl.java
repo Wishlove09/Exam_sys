@@ -1,11 +1,14 @@
 package edu.xmut.examsys.service.impl;
 
+import java.util.Date;
+
 import cn.hutool.core.date.DateUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import edu.xmut.examsys.bean.Question;
 import edu.xmut.examsys.bean.QuestionOption;
 import edu.xmut.examsys.bean.User;
+import edu.xmut.examsys.bean.dto.MultiQuestionDTO;
 import edu.xmut.examsys.bean.dto.OptionDTO;
 import edu.xmut.examsys.bean.dto.PageDTO;
 import edu.xmut.examsys.bean.dto.SingleQuestionDTO;
@@ -18,6 +21,7 @@ import edu.xmut.examsys.service.QuestionService;
 import edu.xmut.examsys.utils.SnowflakeUtils;
 import edu.xmut.examsys.utils.SqlSessionFactoryUtils;
 import fun.shuofeng.myspringmvc.annotaion.Service;
+import org.apache.ibatis.session.SqlSession;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,14 +34,16 @@ import java.util.stream.Collectors;
 public class QuestionServiceImpl implements QuestionService {
 
 
+    private final SqlSession sqlSession;
     private QuestionMapper questionMapper;
     private QuestionOptionMapper questionOptionMapper;
     private UserMapper userMapper;
 
     public QuestionServiceImpl() {
-        questionMapper = SqlSessionFactoryUtils.openSession(true).getMapper(QuestionMapper.class);
-        questionOptionMapper = SqlSessionFactoryUtils.openSession(true).getMapper(QuestionOptionMapper.class);
-        userMapper = SqlSessionFactoryUtils.openSession(true).getMapper(UserMapper.class);
+        sqlSession = SqlSessionFactoryUtils.openSession(false);
+        questionMapper = sqlSession.getMapper(QuestionMapper.class);
+        questionOptionMapper = sqlSession.getMapper(QuestionOptionMapper.class);
+        userMapper = sqlSession.getMapper(UserMapper.class);
     }
 
     @Override
@@ -66,7 +72,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Boolean adSingleQuestion(SingleQuestionDTO singleQuestionDTO) {
+    public Boolean addSingleQuestion(SingleQuestionDTO singleQuestionDTO) {
         Question question = new Question();
         // 雪花算法生成试题ID
         String qid = SnowflakeUtils.nextIdStr();
@@ -105,6 +111,50 @@ public class QuestionServiceImpl implements QuestionService {
         question.setAnalysis(singleQuestionDTO.getAnalysis());
         Integer result = questionMapper.insert(question);
 
+        sqlSession.commit();
+        return result > 0;
+    }
+
+    @Override
+    public Boolean addMultiQuestion(MultiQuestionDTO multiQuestionDTO) {
+        List<String> rightAnswer = multiQuestionDTO.getRightAnswer();
+
+        // 雪花算法生成唯一试题ID
+        String qid = SnowflakeUtils.nextIdStr();
+        Question question = new Question();
+        question.setId(qid);
+
+        // 1.添加选项
+        List<OptionDTO> optionList = multiQuestionDTO.getOptionList();
+        optionList.stream()
+                .map(option -> {
+                    QuestionOption questionOption = new QuestionOption();
+                    String questionOid = SnowflakeUtils.nextIdStr();
+                    questionOption.setId(questionOid);
+                    questionOption.setQid(qid);
+                    questionOption.setIsRight(0);
+                    questionOption.setImage(option.getImage());
+                    questionOption.setContent(option.getContent());
+                    if (rightAnswer.contains(option.getTitle())) {
+                        questionOption.setIsRight(1);
+                    }
+                    return questionOption;
+                })
+                .peek(questionOption -> {
+                    questionOptionMapper.addOption(questionOption);
+                }).forEach(System.out::println);
+
+        // 2.添加试题主体
+        question.setType(1);
+        question.setLevel(multiQuestionDTO.getLevel());
+        question.setImage(multiQuestionDTO.getImage());
+        // question.setOptionId();
+        question.setContent(multiQuestionDTO.getContent());
+        question.setCreator(22222222L);
+        question.setAnalysis(multiQuestionDTO.getAnalysis());
+        Integer result = questionMapper.insert(question);
+
+        sqlSession.commit();
         return result > 0;
     }
 }
