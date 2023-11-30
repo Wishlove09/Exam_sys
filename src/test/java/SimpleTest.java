@@ -1,3 +1,5 @@
+import cn.hutool.core.lang.generator.SnowflakeGenerator;
+import edu.xmut.examsys.utils.SnowflakeUtils;
 import org.junit.Test;
 
 import java.nio.charset.StandardCharsets;
@@ -33,4 +35,22 @@ public class SimpleTest {
 
         System.out.println(buf);
     }
+
+    @Test
+    public void snowflake() throws InterruptedException {
+        new Thread(() -> {
+            while (true) {
+                System.out.println(SnowflakeUtils.nextId());
+            }
+        }).start();
+
+        Thread.sleep(1000 * 2);
+
+    }
+
+    @Test
+    public void snowflakeUtil() {
+    }
+
+
 }
