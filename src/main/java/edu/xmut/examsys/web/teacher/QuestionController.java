@@ -1,6 +1,7 @@
 package edu.xmut.examsys.web.teacher;
 
 import com.alibaba.fastjson2.JSONObject;
+import edu.xmut.examsys.bean.dto.MultiQuestionDTO;
 import edu.xmut.examsys.bean.dto.PageDTO;
 import edu.xmut.examsys.bean.dto.SingleQuestionDTO;
 import edu.xmut.examsys.bean.vo.PageVO;
@@ -52,12 +53,14 @@ public class QuestionController {
         switch (action) {
             case "single":
                 SingleQuestionDTO singleQuestionDTO = JSONObject.parseObject(json, SingleQuestionDTO.class);
-                result = questionService.adSingleQuestion(singleQuestionDTO);
+                result = questionService.addSingleQuestion(singleQuestionDTO);
                 break;
             case "multi":
-
+                MultiQuestionDTO multiQuestionDTO = JSONObject.parseObject(json, MultiQuestionDTO.class);
+                result = questionService.addMultiQuestion(multiQuestionDTO);
                 break;
             case "judge":
+
                 break;
             case "fill":
                 break;
