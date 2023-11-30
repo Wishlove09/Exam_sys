@@ -11,5 +11,5 @@ import edu.xmut.examsys.bean.vo.PageVO;
 public interface QuestionService {
     PageVO pages(PageDTO pageDTO);
 
-    Integer adSingleQuestion(SingleQuestionDTO singleQuestionDTO);
+    Boolean adSingleQuestion(SingleQuestionDTO singleQuestionDTO);
 }

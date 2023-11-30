@@ -24,6 +24,10 @@
         creator,analysis,create_time,
         update_time,is_deleted
     </sql>
+    <insert id="insert">
+        insert into question(id, type, level, image, option_id, content, creator, analysis)
+        values (#{id}, #{type}, #{level}, #{image}, #{optionId}, #{content}, #{creator}, #{analysis})
+    </insert>
     <select id="pages" resultType="edu.xmut.examsys.bean.Question">
         select *
         from question

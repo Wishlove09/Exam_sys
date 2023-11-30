@@ -4,7 +4,9 @@ import cn.hutool.core.date.DateUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import edu.xmut.examsys.bean.Question;
+import edu.xmut.examsys.bean.QuestionOption;
 import edu.xmut.examsys.bean.User;
+import edu.xmut.examsys.bean.dto.OptionDTO;
 import edu.xmut.examsys.bean.dto.PageDTO;
 import edu.xmut.examsys.bean.dto.SingleQuestionDTO;
 import edu.xmut.examsys.bean.vo.PageVO;
@@ -13,6 +15,7 @@ import edu.xmut.examsys.mapper.QuestionMapper;
 import edu.xmut.examsys.mapper.QuestionOptionMapper;
 import edu.xmut.examsys.mapper.UserMapper;
 import edu.xmut.examsys.service.QuestionService;
+import edu.xmut.examsys.utils.SnowflakeUtils;
 import edu.xmut.examsys.utils.SqlSessionFactoryUtils;
 import fun.shuofeng.myspringmvc.annotaion.Service;
 
@@ -63,16 +66,45 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Integer adSingleQuestion(SingleQuestionDTO singleQuestionDTO) {
+    public Boolean adSingleQuestion(SingleQuestionDTO singleQuestionDTO) {
+        Question question = new Question();
+        // 雪花算法生成试题ID
+        String qid = SnowflakeUtils.nextIdStr();
 
-        // 1.添加试题选项
-
+        // 得到正确答案
+        String rightAnswer = singleQuestionDTO.getRightAnswer();
+        List<OptionDTO> optionList = singleQuestionDTO.getOptionList();
+        // 1.添加试题各个选项
+        optionList.stream()
+                .map(option -> {
+                    QuestionOption questionOption = new QuestionOption();
+                    // 雪花算法生成选项ID
+                    String questionOId = SnowflakeUtils.nextIdStr();
+                    questionOption.setId(questionOId);
+                    questionOption.setQid(qid);
+                    questionOption.setIsRight(0);
+                    questionOption.setContent(option.getContent());
+                    questionOption.setImage(option.getImage());
+                    if (option.getTitle().equals(rightAnswer)) {
+                        question.setOptionId(questionOId);
+                        questionOption.setIsRight(1);
+                    }
+                    return questionOption;
+                })
+                .peek(questionOption -> {
+                    questionOptionMapper.addOption(questionOption);
+                }).forEach(System.out::println);
 
         // 2.添加试题主体
+        question.setId(qid);
+        question.setType(0);
+        question.setLevel(singleQuestionDTO.getLevel());
+        question.setImage(singleQuestionDTO.getImage());
+        question.setContent(singleQuestionDTO.getContent());
+        question.setCreator(1111111L);
+        question.setAnalysis(singleQuestionDTO.getAnalysis());
+        Integer result = questionMapper.insert(question);
 
-
-
-
-        return null;
+        return result > 0;
     }
 }

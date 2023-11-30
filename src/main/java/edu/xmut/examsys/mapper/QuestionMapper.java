@@ -14,6 +14,7 @@ public interface QuestionMapper  {
 
     Page<Question> pages(String search);
 
+    Integer insert(Question question);
 }
 
 
