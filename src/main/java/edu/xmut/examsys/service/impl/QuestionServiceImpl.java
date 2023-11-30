@@ -3,15 +3,13 @@ package edu.xmut.examsys.service.impl;
 import java.util.Date;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.lang.generator.SnowflakeGenerator;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import edu.xmut.examsys.bean.Question;
 import edu.xmut.examsys.bean.QuestionOption;
 import edu.xmut.examsys.bean.User;
-import edu.xmut.examsys.bean.dto.MultiQuestionDTO;
-import edu.xmut.examsys.bean.dto.OptionDTO;
-import edu.xmut.examsys.bean.dto.PageDTO;
-import edu.xmut.examsys.bean.dto.SingleQuestionDTO;
+import edu.xmut.examsys.bean.dto.*;
 import edu.xmut.examsys.bean.vo.PageVO;
 import edu.xmut.examsys.bean.vo.QuestionVO;
 import edu.xmut.examsys.mapper.QuestionMapper;
@@ -154,6 +152,45 @@ public class QuestionServiceImpl implements QuestionService {
         question.setAnalysis(multiQuestionDTO.getAnalysis());
         Integer result = questionMapper.insert(question);
 
+        sqlSession.commit();
+        return result > 0;
+    }
+
+    @Override
+    public Boolean addJudgeQuestion(JudgeQuestionDTO judgeQuestionDTO) {
+        // 生成试题ID
+        String qid = SnowflakeUtils.nextIdStr();
+        Question question = new Question();
+        question.setId(qid);
+        // 添加试题主题
+        question.setType(2);
+        question.setLevel(judgeQuestionDTO.getLevel());
+        question.setImage(judgeQuestionDTO.getImage());
+        question.setContent(judgeQuestionDTO.getContent());
+        question.setCreator(3333333L);
+        question.setAnalysis(judgeQuestionDTO.getAnalysis());
+        // 答案
+        String answer = judgeQuestionDTO.getAnswer();
+        for (int i = 0; i < 2; i++) {
+            QuestionOption questionOption = new QuestionOption();
+            String id = SnowflakeUtils.nextIdStr();
+            questionOption.setId(id);
+            questionOption.setQid(qid);
+            questionOption.setIsRight(0);
+            if (i == 0) {
+                questionOption.setContent("T");
+            } else {
+                questionOption.setContent("F");
+            }
+            if (answer.equals(questionOption.getContent())) {
+                question.setOptionId(id);
+                questionOption.setIsRight(1);
+            }
+            questionOptionMapper.addOption(questionOption);
+        }
+
+        Integer result = questionMapper.insert(question);
+        // 提交事务
         sqlSession.commit();
         return result > 0;
     }

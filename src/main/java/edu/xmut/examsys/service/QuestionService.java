@@ -1,5 +1,6 @@
 package edu.xmut.examsys.service;
 
+import edu.xmut.examsys.bean.dto.JudgeQuestionDTO;
 import edu.xmut.examsys.bean.dto.MultiQuestionDTO;
 import edu.xmut.examsys.bean.dto.PageDTO;
 import edu.xmut.examsys.bean.dto.SingleQuestionDTO;
@@ -15,4 +16,6 @@ public interface QuestionService {
     Boolean addSingleQuestion(SingleQuestionDTO singleQuestionDTO);
 
     Boolean addMultiQuestion(MultiQuestionDTO multiQuestionDTO);
+
+    Boolean addJudgeQuestion(JudgeQuestionDTO judgeQuestionDTO);
 }
