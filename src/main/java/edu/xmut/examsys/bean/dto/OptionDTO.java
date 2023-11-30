@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
-public class OptionListDTO {
+public class OptionDTO {
     private String title;
     private String content;
     private String image;
