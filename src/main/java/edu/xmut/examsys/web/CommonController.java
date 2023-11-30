@@ -7,6 +7,7 @@ import edu.xmut.examsys.bean.dto.RegisterDTO;
 import edu.xmut.examsys.bean.vo.LoginVO;
 import edu.xmut.examsys.exception.GlobalException;
 import edu.xmut.examsys.service.UserService;
+import edu.xmut.examsys.utils.JwtTokenUtil;
 import edu.xmut.examsys.utils.MD5Utils;
 import edu.xmut.examsys.utils.R;
 import fun.shuofeng.myspringmvc.annotaion.Autowired;
@@ -27,6 +28,8 @@ public class CommonController {
     @Autowired
     private UserService userService;
 
+    private JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
+
 
     @RequestMapping(value = "/login", method = "post")
     public R login(String json, HttpServletRequest request) {
@@ -35,9 +38,13 @@ public class CommonController {
         }
         LoginDTO loginDTO = JSONObject.parseObject(json, LoginDTO.class);
         User user = userService.login(loginDTO);
+        // 生成token
+        String token = jwtTokenUtil.generateToken(user);
         request.getSession().setAttribute("user", user);
+
         LoginVO loginVO = LoginVO.builder()
                 .userId(user.getId())
+                .token(token)
                 .avatar(user.getAvatar())
                 .role(user.getRole())
                 .username(user.getUsername())
@@ -54,7 +61,6 @@ public class CommonController {
             throw new GlobalException("注册信息为空");
         }
         RegisterDTO registerDTO = JSONObject.parseObject(json, RegisterDTO.class);
-
 
         Boolean result = userService.register(registerDTO);
 
