@@ -12,4 +12,5 @@ public interface SystemConstant {
     String ADD_FAIL = "添加失败";
     String ADD_SUCCESS = "添加成功";
 
+    String AUTHORIZATION = "Authorization";
 }
