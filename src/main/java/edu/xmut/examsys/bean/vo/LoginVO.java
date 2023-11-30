@@ -22,4 +22,6 @@ public class LoginVO {
 
     private String realName;
 
+    private String token;
+
 }
