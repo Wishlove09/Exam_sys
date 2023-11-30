@@ -16,8 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import java.util.Objects;
 
-import static edu.xmut.examsys.constants.SystemConstant.ADD_FAIL;
-import static edu.xmut.examsys.constants.SystemConstant.MISSING_ARGUMENT;
+import static edu.xmut.examsys.constants.SystemConstant.*;
 
 /**
  * @author 朔风
@@ -49,7 +48,7 @@ public class QuestionController {
         if (StringUtils.isBlank(action)) {
             throw new GlobalException(MISSING_ARGUMENT);
         }
-        Integer result = 0;
+        Boolean result = false;
         switch (action) {
             case "single":
                 SingleQuestionDTO singleQuestionDTO = JSONObject.parseObject(json, SingleQuestionDTO.class);
@@ -66,6 +65,6 @@ public class QuestionController {
                 return R.fail(ADD_FAIL);
         }
 
-        return result > 0 ? R.ok() : R.fail();
+        return result ? R.ok(ADD_SUCCESS) : R.fail(ADD_FAIL);
     }
 }
