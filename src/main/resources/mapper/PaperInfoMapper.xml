@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.xmut.examsys.mapper.PaperInfoMapper">
+
+    <resultMap id="BaseResultMap" type="edu.xmut.examsys.bean.PaperInfo">
+            <result property="id" column="id" jdbcType="BIGINT"/>
+            <result property="title" column="title" jdbcType="VARCHAR"/>
+            <result property="desc" column="desc" jdbcType="VARCHAR"/>
+            <result property="creator" column="creator" jdbcType="BIGINT"/>
+            <result property="radioCount" column="radio_count" jdbcType="INTEGER"/>
+            <result property="radioScore" column="radio_score" jdbcType="INTEGER"/>
+            <result property="multiCount" column="multi_count" jdbcType="INTEGER"/>
+            <result property="multiScore" column="multi_score" jdbcType="INTEGER"/>
+            <result property="judgeCount" column="judge_count" jdbcType="INTEGER"/>
+            <result property="judgeScore" column="judge_score" jdbcType="INTEGER"/>
+            <result property="fillCount" column="fill_count" jdbcType="INTEGER"/>
+            <result property="fillScore" column="fill_score" jdbcType="INTEGER"/>
+            <result property="totalScore" column="total_score" jdbcType="INTEGER"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,title,desc,
+        creator,radio_count,radio_score,
+        multi_count,multi_score,judge_count,
+        judge_score,fill_count,fill_score,
+        total_score,status,create_time,
+        update_time,is_deleted
+    </sql>
+</mapper>
