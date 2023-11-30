@@ -1,6 +1,7 @@
 package edu.xmut.examsys.web.teacher;
 
 import com.alibaba.fastjson2.JSONObject;
+import edu.xmut.examsys.bean.dto.JudgeQuestionDTO;
 import edu.xmut.examsys.bean.dto.MultiQuestionDTO;
 import edu.xmut.examsys.bean.dto.PageDTO;
 import edu.xmut.examsys.bean.dto.SingleQuestionDTO;
@@ -60,7 +61,8 @@ public class QuestionController {
                 result = questionService.addMultiQuestion(multiQuestionDTO);
                 break;
             case "judge":
-
+                JudgeQuestionDTO judgeQuestionDTO = JSONObject.parseObject(json, JudgeQuestionDTO.class);
+                result = questionService.addJudgeQuestion(judgeQuestionDTO);
                 break;
             case "fill":
                 break;
