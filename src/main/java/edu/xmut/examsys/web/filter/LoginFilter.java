@@ -10,9 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -44,7 +41,7 @@ public class LoginFilter extends SecurityFilter {
             log.info("当前登录的用户为：{}-{}", userId, realName);
             // 放行
             chain.doFilter(request, response);
-            log.info("Token有效>>>>>>>>放行");
+            log.info("Token有效>>>>>>>>>>>>>>>>>放行");
         } else {
             // token已过期
             tokenIsExpired(response);
