@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * JwtToken生成的工具类
@@ -52,10 +53,12 @@ public class JwtTokenUtil {
      * 从token中获取JWT中的负载
      */
     private Claims getPayload(String token) {
-        return Jwts.parser()
+        Claims claims;
+        claims = Jwts.parser()
                 .setSigningKey(secret)
                 .parseClaimsJws(token)
                 .getBody();
+        return claims;
     }
 
     /**
@@ -99,10 +102,10 @@ public class JwtTokenUtil {
     /**
      * 判断token是否已经失效
      */
-    private  boolean isTokenExpired(String token) {
+    private boolean isTokenExpired(String token) {
         try {
             getExpiredDate(token);
-        } catch (ExpiredJwtException e) {
+        } catch (Exception e) {
             return true;
         }
         return false;
