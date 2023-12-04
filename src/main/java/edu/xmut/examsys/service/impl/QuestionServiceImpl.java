@@ -1,16 +1,15 @@
 package edu.xmut.examsys.service.impl;
 
-import java.util.Date;
-
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.lang.generator.SnowflakeGenerator;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import edu.xmut.examsys.bean.Question;
 import edu.xmut.examsys.bean.QuestionOption;
 import edu.xmut.examsys.bean.User;
 import edu.xmut.examsys.bean.dto.*;
+import edu.xmut.examsys.bean.vo.OptionVO;
 import edu.xmut.examsys.bean.vo.PageVO;
+import edu.xmut.examsys.bean.vo.QuestionDetailsVO;
 import edu.xmut.examsys.bean.vo.QuestionVO;
 import edu.xmut.examsys.mapper.QuestionMapper;
 import edu.xmut.examsys.mapper.QuestionOptionMapper;
@@ -22,6 +21,7 @@ import fun.shuofeng.myspringmvc.annotaion.Service;
 import org.apache.ibatis.session.SqlSession;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -224,4 +224,40 @@ public class QuestionServiceImpl implements QuestionService {
         sqlSession.commit();
         return r1 > 0 && r2 > 0;
     }
+
+    @Override
+    public QuestionDetailsVO getById(String qid) {
+
+        Question question = questionMapper.selectById(qid);
+
+        List<QuestionOption> optionList = questionOptionMapper.selectByQid(qid);
+        String rightAnswer = "";
+        for (QuestionOption questionOption : optionList) {
+            if (Objects.equals(1, questionOption.getIsRight())) {
+                rightAnswer = questionOption.getId();
+                break;
+            }
+        }
+
+        List<OptionVO> optionVOList = optionList.stream()
+                .map((questionOption) -> {
+                    OptionVO optionVO = new OptionVO();
+                    optionVO.setId(questionOption.getId());
+                    optionVO.setImage(questionOption.getImage());
+                    optionVO.setContent(questionOption.getContent());
+                    return optionVO;
+                }).collect(Collectors.toList());
+
+
+        return QuestionDetailsVO.builder()
+                .id(question.getId())
+                .content(question.getContent())
+                .type(question.getType())
+                .level(question.getLevel())
+                .image(question.getImage())
+                .rightAnswer(rightAnswer)
+                .optionList(optionVOList)
+                .build();
+    }
+
 }

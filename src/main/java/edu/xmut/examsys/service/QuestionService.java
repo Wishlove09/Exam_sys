@@ -2,6 +2,7 @@ package edu.xmut.examsys.service;
 
 import edu.xmut.examsys.bean.dto.*;
 import edu.xmut.examsys.bean.vo.PageVO;
+import edu.xmut.examsys.bean.vo.QuestionDetailsVO;
 
 /**
  * @author 朔风
@@ -17,4 +18,6 @@ public interface QuestionService {
     Boolean addJudgeQuestion(JudgeQuestionDTO judgeQuestionDTO);
 
     Boolean addFillQuestion(FillQuestionDTO fillQuestionDTO);
+
+    QuestionDetailsVO getById(String id);
 }
