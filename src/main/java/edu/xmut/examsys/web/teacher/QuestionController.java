@@ -3,6 +3,8 @@ package edu.xmut.examsys.web.teacher;
 import com.alibaba.fastjson2.JSONObject;
 import edu.xmut.examsys.bean.dto.*;
 import edu.xmut.examsys.bean.vo.PageVO;
+import edu.xmut.examsys.bean.vo.QuestionDetailsVO;
+import edu.xmut.examsys.bean.vo.QuestionVO;
 import edu.xmut.examsys.exception.GlobalException;
 import edu.xmut.examsys.service.QuestionService;
 import edu.xmut.examsys.utils.R;
@@ -12,6 +14,7 @@ import fun.shuofeng.myspringmvc.annotaion.RequestMapping;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import java.util.Objects;
 
@@ -71,4 +74,17 @@ public class QuestionController {
 
         return result ? R.ok(ADD_SUCCESS) : R.fail(ADD_FAIL);
     }
+
+    @RequestMapping("/get")
+    public R getByQid(HttpServletRequest request) {
+        if (Objects.isNull(request.getParameter("id"))) {
+            throw new GlobalException(MISSING_ARGUMENT);
+        }
+        String id = request.getParameter("id");
+
+        QuestionDetailsVO questionDetailsVO = questionService.getById(id);
+
+        return R.ok(questionDetailsVO);
+    }
+
 }
