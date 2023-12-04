@@ -22,8 +22,9 @@ public class QuestionDetailsVO {
     private String content;
     private Integer type;
     private Integer level;
-    private String rightAnswer;
+    private List<String> rightAnswer;
     private String image;
+    private String analysis;
 
     private List<OptionVO> optionList;
 

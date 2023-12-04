@@ -20,6 +20,7 @@ import edu.xmut.examsys.utils.SqlSessionFactoryUtils;
 import fun.shuofeng.myspringmvc.annotaion.Service;
 import org.apache.ibatis.session.SqlSession;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -231,11 +232,10 @@ public class QuestionServiceImpl implements QuestionService {
         Question question = questionMapper.selectById(qid);
 
         List<QuestionOption> optionList = questionOptionMapper.selectByQid(qid);
-        String rightAnswer = "";
+        List<String> rightAnswer = new ArrayList<>();
         for (QuestionOption questionOption : optionList) {
             if (Objects.equals(1, questionOption.getIsRight())) {
-                rightAnswer = questionOption.getId();
-                break;
+                rightAnswer.add(questionOption.getId());
             }
         }
 
@@ -254,6 +254,7 @@ public class QuestionServiceImpl implements QuestionService {
                 .content(question.getContent())
                 .type(question.getType())
                 .level(question.getLevel())
+                .analysis(question.getAnalysis())
                 .image(question.getImage())
                 .rightAnswer(rightAnswer)
                 .optionList(optionVOList)
