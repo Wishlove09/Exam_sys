@@ -38,4 +38,9 @@
         </where>
         order by update_time
     </select>
+    <select id="selectById" resultType="edu.xmut.examsys.bean.Question">
+        select *
+        from question
+        where id = #{id}
+    </select>
 </mapper>
