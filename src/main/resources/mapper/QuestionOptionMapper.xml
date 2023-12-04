@@ -24,4 +24,9 @@
         insert into question_option(id, qid, is_right, image, content)
         values (#{id}, #{qid}, #{isRight}, #{image}, #{content})
     </insert>
+    <select id="selectByQid" resultType="edu.xmut.examsys.bean.QuestionOption">
+        select *
+        from question_option
+        where qid = #{id}
+    </select>
 </mapper>
