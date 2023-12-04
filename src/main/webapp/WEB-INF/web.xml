@@ -23,6 +23,7 @@
         <filter-name>LoginFilter</filter-name>
         <filter-class>edu.xmut.examsys.web.filter.LoginFilter</filter-class>
         <init-param>
+            <!-- 排除拦截的路径 -->
             <param-name>excludedPath</param-name>
             <param-value>/login,/register</param-value>
         </init-param>
