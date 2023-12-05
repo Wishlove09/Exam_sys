@@ -32,6 +32,13 @@
         total_score,status,create_time,
         update_time,is_deleted
     </sql>
+    <insert id="insert">
+        insert into paper_info(id, title, `desc`, creator, radio_count, radio_score, multi_count, multi_score,
+                               judge_count, judge_score, fill_count, fill_score, total_score)
+        VALUES (#{id}, #{title}, #{desc}, #{creator}, #{radioCount}, #{radioScore}, #{multiCount}, #{multiScore},
+                #{judgeCount}, #{judgeScore}, #{fillCount}, #{fillScore}, #{totalScore})
+    </insert>
+
     <select id="pages" resultType="edu.xmut.examsys.bean.PaperInfo">
         select *
         from paper_info
@@ -39,7 +46,7 @@
             <if test="search !=null">
                 title like concat('%', #{search},'%') or `desc` like concat('%', #{search},'%')
             </if>
-
         </where>
+        order by create_time desc
     </select>
 </mapper>

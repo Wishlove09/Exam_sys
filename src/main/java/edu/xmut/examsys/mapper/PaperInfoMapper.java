@@ -13,6 +13,7 @@ public interface PaperInfoMapper {
 
     Page<PaperInfo> pages(String search);
 
+    Integer insert(PaperInfo paperInfo);
 }
 
 

@@ -1,17 +1,24 @@
 package edu.xmut.examsys.service.impl;
 
+import cn.hutool.core.lang.UUID;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import edu.xmut.examsys.bean.PaperInfo;
 import edu.xmut.examsys.bean.dto.PageDTO;
+import edu.xmut.examsys.bean.dto.PaperDetailsDTO;
 import edu.xmut.examsys.bean.vo.PageVO;
 import edu.xmut.examsys.bean.vo.PaperInfoVO;
+import edu.xmut.examsys.constants.SystemConstant;
 import edu.xmut.examsys.mapper.PaperInfoMapper;
+import edu.xmut.examsys.mapper.PaperQuestionMapper;
 import edu.xmut.examsys.mapper.UserMapper;
 import edu.xmut.examsys.service.PaperService;
+import edu.xmut.examsys.utils.JwtTokenUtil;
 import edu.xmut.examsys.utils.SqlSessionFactoryUtils;
 import fun.shuofeng.myspringmvc.annotaion.Service;
+import org.apache.ibatis.session.SqlSession;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,11 +29,18 @@ import java.util.stream.Collectors;
 @Service
 public class PaperServiceImpl implements PaperService {
 
+    private final JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
+    private final SqlSession sqlSession;
+
+
     private PaperInfoMapper paperInfoMapper;
+    private PaperQuestionMapper paperQuestionMapper;
     private UserMapper userMapper;
 
     public PaperServiceImpl() {
-        paperInfoMapper = SqlSessionFactoryUtils.openSession(true).getMapper(PaperInfoMapper.class);
+        sqlSession = SqlSessionFactoryUtils.openSession(false);
+        paperQuestionMapper = sqlSession.getMapper(PaperQuestionMapper.class);
+        paperInfoMapper = sqlSession.getMapper(PaperInfoMapper.class);
         userMapper = SqlSessionFactoryUtils.openSession(true).getMapper(UserMapper.class);
     }
 
@@ -53,5 +67,35 @@ public class PaperServiceImpl implements PaperService {
                 .records(collect)
                 .total(pages.getTotal())
                 .build();
+    }
+
+    @Override
+    public Boolean addPaper(PaperDetailsDTO paperDetailsDTO, HttpServletRequest request) {
+        Integer singleCount = paperDetailsDTO.getSingleCount();
+        Integer multiCount = paperDetailsDTO.getMultiCount();
+        Integer judgeCount = paperDetailsDTO.getJudgeCount();
+        Integer fillCount = paperDetailsDTO.getFillCount();
+
+        PaperInfo paperInfo = new PaperInfo();
+        paperInfo.setId(System.currentTimeMillis());
+        paperInfo.setTitle(paperDetailsDTO.getTitle());
+        paperInfo.setDesc(paperDetailsDTO.getDesc());
+        paperInfo.setTotalScore(paperDetailsDTO.getTotal());
+        paperInfo.setRadioCount(singleCount);
+        paperInfo.setRadioScore(2);
+        paperInfo.setMultiCount(multiCount);
+        paperInfo.setMultiScore(2);
+        paperInfo.setJudgeCount(judgeCount);
+        paperInfo.setJudgeScore(2);
+        paperInfo.setFillCount(fillCount);
+        paperInfo.setFillScore(2);
+        String token = request.getHeader(SystemConstant.AUTHORIZATION);
+        paperInfo.setCreator(Long.valueOf(jwtTokenUtil.getUserId(token)));
+
+        Integer r1 = paperInfoMapper.insert(paperInfo);
+        Integer r2 = paperQuestionMapper.insert(paperInfo.getId(), paperDetailsDTO.getQuestionIds());
+
+        sqlSession.commit();
+        return r1 > 0 && r2 > 0;
     }
 }
