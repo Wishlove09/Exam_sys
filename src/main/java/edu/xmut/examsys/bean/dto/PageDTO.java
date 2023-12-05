@@ -11,4 +11,5 @@ public class PageDTO {
     Integer pageNum;
     Integer pageSize;
     String search;
+    Integer type;
 }
