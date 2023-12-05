@@ -3,6 +3,7 @@ package edu.xmut.examsys.web.teacher;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import edu.xmut.examsys.bean.dto.PageDTO;
+import edu.xmut.examsys.bean.dto.PageInfoDTO;
 import edu.xmut.examsys.bean.dto.PaperDetailsDTO;
 import edu.xmut.examsys.bean.vo.PageVO;
 import edu.xmut.examsys.exception.GlobalException;
@@ -15,6 +16,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.*;
+
+import java.util.Objects;
 
 import static edu.xmut.examsys.constants.SystemConstant.MISSING_ARGUMENT;
 
@@ -51,5 +55,30 @@ public class PaperController {
         Boolean result = paperService.addPaper(paperDetailsDTO, request);
 
         return result ? R.ok("添加成功") : R.fail("添加失败");
+    }
+
+    @RequestMapping(value = "/update", method = "post")
+    public R update(String json) {
+        if (StringUtils.isBlank(json)) {
+            throw new GlobalException(MISSING_ARGUMENT);
+        }
+
+        JSONObject jsonObject = JSON.parseObject(json);
+        Long id = jsonObject.getLong("id");
+        Integer status = jsonObject.getInteger("status");
+
+        PageInfoDTO pageInfoDTO = new PageInfoDTO();
+        pageInfoDTO.setId(id);
+        if (Objects.equals(0, status)) {
+            pageInfoDTO.setStatus(1);
+        } else {
+            pageInfoDTO.setStatus(0);
+        }
+
+
+        Boolean result = paperService.updateWithStatus(pageInfoDTO);
+
+        return result ? R.ok("更新成功") : R.fail("更新失败");
+
     }
 }
