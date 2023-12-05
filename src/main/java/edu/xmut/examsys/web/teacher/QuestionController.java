@@ -1,9 +1,12 @@
 package edu.xmut.examsys.web.teacher;
 
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import edu.xmut.examsys.bean.dto.*;
 import edu.xmut.examsys.bean.vo.PageVO;
 import edu.xmut.examsys.bean.vo.QuestionDetailsVO;
+import edu.xmut.examsys.bean.vo.QuestionListVO;
 import edu.xmut.examsys.bean.vo.QuestionVO;
 import edu.xmut.examsys.exception.GlobalException;
 import edu.xmut.examsys.service.QuestionService;
@@ -16,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.util.List;
 import java.util.Objects;
 
 import static edu.xmut.examsys.constants.SystemConstant.*;
@@ -53,19 +57,19 @@ public class QuestionController {
         switch (action) {
             case "single":
                 SingleQuestionDTO singleQuestionDTO = JSONObject.parseObject(json, SingleQuestionDTO.class);
-                result = questionService.addSingleQuestion(singleQuestionDTO,request);
+                result = questionService.addSingleQuestion(singleQuestionDTO, request);
                 break;
             case "multi":
                 MultiQuestionDTO multiQuestionDTO = JSONObject.parseObject(json, MultiQuestionDTO.class);
-                result = questionService.addMultiQuestion(multiQuestionDTO,request);
+                result = questionService.addMultiQuestion(multiQuestionDTO, request);
                 break;
             case "judge":
                 JudgeQuestionDTO judgeQuestionDTO = JSONObject.parseObject(json, JudgeQuestionDTO.class);
-                result = questionService.addJudgeQuestion(judgeQuestionDTO,request);
+                result = questionService.addJudgeQuestion(judgeQuestionDTO, request);
                 break;
             case "fill":
                 FillQuestionDTO fillQuestionDTO = JSONObject.parseObject(json, FillQuestionDTO.class);
-                result = questionService.addFillQuestion(fillQuestionDTO,request);
+                result = questionService.addFillQuestion(fillQuestionDTO, request);
                 break;
             default:
                 return R.fail(ADD_FAIL);
@@ -84,6 +88,19 @@ public class QuestionController {
         QuestionDetailsVO questionDetailsVO = questionService.getById(id);
 
         return R.ok(questionDetailsVO);
+    }
+
+    @RequestMapping(value = "/get/batch", method = "post")
+    public R getByIds(String json) {
+        if (StringUtils.isBlank(json)) {
+            throw new GlobalException(MISSING_ARGUMENT);
+        }
+        List<String> ids = JSONArray.parseArray(json, String.class);
+
+
+        QuestionListVO questionListVO =questionService.getByIdsBatch(ids);
+
+        return R.ok(questionListVO);
     }
 
 

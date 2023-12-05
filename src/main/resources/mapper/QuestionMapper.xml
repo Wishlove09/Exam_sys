@@ -50,4 +50,12 @@
         from question
         where id = #{id}
     </select>
+    <select id="selectByIdsBatch" resultType="edu.xmut.examsys.bean.Question">
+        select id,content,type from question
+        <where>
+            <foreach collection="ids" item="id" open="id in (" close=")" separator=",">
+                #{id}
+            </foreach>
+        </where>
+    </select>
 </mapper>

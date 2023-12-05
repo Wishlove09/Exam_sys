@@ -3,8 +3,10 @@ package edu.xmut.examsys.service;
 import edu.xmut.examsys.bean.dto.*;
 import edu.xmut.examsys.bean.vo.PageVO;
 import edu.xmut.examsys.bean.vo.QuestionDetailsVO;
+import edu.xmut.examsys.bean.vo.QuestionListVO;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author 朔风
@@ -22,4 +24,6 @@ public interface QuestionService {
     Boolean addFillQuestion(FillQuestionDTO fillQuestionDTO, HttpServletRequest request);
 
     QuestionDetailsVO getById(String id);
+
+    QuestionListVO getByIdsBatch(List<String> questionBatchDTO);
 }

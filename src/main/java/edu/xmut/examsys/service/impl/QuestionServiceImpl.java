@@ -7,10 +7,7 @@ import edu.xmut.examsys.bean.Question;
 import edu.xmut.examsys.bean.QuestionOption;
 import edu.xmut.examsys.bean.User;
 import edu.xmut.examsys.bean.dto.*;
-import edu.xmut.examsys.bean.vo.OptionVO;
-import edu.xmut.examsys.bean.vo.PageVO;
-import edu.xmut.examsys.bean.vo.QuestionDetailsVO;
-import edu.xmut.examsys.bean.vo.QuestionVO;
+import edu.xmut.examsys.bean.vo.*;
 import edu.xmut.examsys.constants.SystemConstant;
 import edu.xmut.examsys.mapper.QuestionMapper;
 import edu.xmut.examsys.mapper.QuestionOptionMapper;
@@ -268,6 +265,47 @@ public class QuestionServiceImpl implements QuestionService {
                 .image(question.getImage())
                 .rightAnswer(rightAnswer)
                 .optionList(optionVOList)
+                .build();
+    }
+
+    @Override
+    public QuestionListVO getByIdsBatch(List<String> ids) {
+
+
+
+        ArrayList<QuestionVO> singleList = new ArrayList<>();
+        ArrayList<QuestionVO> multiList = new ArrayList<>();
+        ArrayList<QuestionVO> judgeList = new ArrayList<>();
+        ArrayList<QuestionVO> fillList = new ArrayList<>();
+
+        List<Question> questions = questionMapper.selectByIdsBatch(ids);
+        questions.stream()
+                .map((question -> QuestionVO.builder()
+                        .id(question.getId())
+                        .type(question.getType())
+                        .content(question.getContent())
+                        .build()))
+                .peek(questionVO -> {
+                    if (questionVO.getType().equals(0)) {
+                        singleList.add(questionVO);
+                    }
+                    if (questionVO.getType().equals(1)) {
+                        multiList.add(questionVO);
+                    }
+                    if (questionVO.getType().equals(2)) {
+                        judgeList.add(questionVO);
+                    }
+                    if (questionVO.getType().equals(3)) {
+                        fillList.add(questionVO);
+                    }
+                }).forEach(System.out::println);
+
+
+        return QuestionListVO.builder()
+                .singleList(singleList)
+                .multiList(multiList)
+                .judgeList(judgeList)
+                .fillList(fillList)
                 .build();
     }
 

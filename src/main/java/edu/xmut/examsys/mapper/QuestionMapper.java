@@ -4,6 +4,8 @@ import com.github.pagehelper.Page;
 import edu.xmut.examsys.bean.Question;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * @author shuofeng
  * @description 针对表【question(试题主表)】的数据库操作Mapper
@@ -22,6 +24,10 @@ public interface QuestionMapper {
     Integer insert(Question question);
 
     Question selectById(String id);
+
+    List<Question> selectByIdsBatch(
+            @Param("ids")
+            List<String> ids);
 }
 
 
