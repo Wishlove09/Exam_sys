@@ -32,4 +32,14 @@
         total_score,status,create_time,
         update_time,is_deleted
     </sql>
+    <select id="pages" resultType="edu.xmut.examsys.bean.PaperInfo">
+        select *
+        from paper_info
+        <where>
+            <if test="search !=null">
+                title like concat('%', #{search},'%') or `desc` like concat('%', #{search},'%')
+            </if>
+
+        </where>
+    </select>
 </mapper>
