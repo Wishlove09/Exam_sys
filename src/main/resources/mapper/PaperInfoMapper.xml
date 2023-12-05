@@ -38,6 +38,25 @@
         VALUES (#{id}, #{title}, #{desc}, #{creator}, #{radioCount}, #{radioScore}, #{multiCount}, #{multiScore},
                 #{judgeCount}, #{judgeScore}, #{fillCount}, #{fillScore}, #{totalScore})
     </insert>
+    <update id="update">
+        update paper_info
+        <set>
+            <if test="title !=null">
+                title = #{title}
+            </if>
+            <if test="desc !=null">
+                `desc` = #{desc}
+            </if>
+            <if test="status !=null">
+                `status` = #{status}
+            </if>
+        </set>
+        <where>
+            <if test="id!=null">
+                and id =#{id }
+            </if>
+        </where>
+    </update>
 
     <select id="pages" resultType="edu.xmut.examsys.bean.PaperInfo">
         select *

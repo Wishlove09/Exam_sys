@@ -2,6 +2,7 @@ package edu.xmut.examsys.mapper;
 
 import com.github.pagehelper.Page;
 import edu.xmut.examsys.bean.PaperInfo;
+import edu.xmut.examsys.bean.dto.PageInfoDTO;
 
 /**
  * @author shuofeng
@@ -14,6 +15,8 @@ public interface PaperInfoMapper {
     Page<PaperInfo> pages(String search);
 
     Integer insert(PaperInfo paperInfo);
+
+    Integer update(PageInfoDTO pageInfoDTO);
 }
 
 

@@ -5,6 +5,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import edu.xmut.examsys.bean.PaperInfo;
 import edu.xmut.examsys.bean.dto.PageDTO;
+import edu.xmut.examsys.bean.dto.PageInfoDTO;
 import edu.xmut.examsys.bean.dto.PaperDetailsDTO;
 import edu.xmut.examsys.bean.vo.PageVO;
 import edu.xmut.examsys.bean.vo.PaperInfoVO;
@@ -97,5 +98,13 @@ public class PaperServiceImpl implements PaperService {
 
         sqlSession.commit();
         return r1 > 0 && r2 > 0;
+    }
+
+    @Override
+    public Boolean updateWithStatus(PageInfoDTO pageInfoDTO) {
+        Integer result = paperInfoMapper.update(pageInfoDTO);
+
+
+        return result > 0;
     }
 }
