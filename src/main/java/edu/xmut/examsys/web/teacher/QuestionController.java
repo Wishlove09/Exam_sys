@@ -39,7 +39,6 @@ public class QuestionController {
         }
         PageDTO pageDTO = JSONObject.parseObject(json, PageDTO.class);
         PageVO pageVO = questionService.pages(pageDTO);
-
         return R.ok(pageVO);
 
     }
