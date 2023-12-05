@@ -11,6 +11,10 @@
         <setting name="logImpl" value="STDOUT_LOGGING"/>
         <!-- 开启mybatis下划线转驼峰-->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!--   关闭二级缓存     -->
+        <setting name="cacheEnabled" value="false"/>
+        <!-- 设置一级缓存的作用范围是一条sql语句执行期间，执行完毕清空一级缓存-->
+        <setting name="localCacheScope" value="STATEMENT"/>
     </settings>
 
     <!-- 配置插件 -->
@@ -41,7 +45,7 @@
         <mapper resource="mapper/DepartmentMapper.xml"/>
         <mapper resource="mapper/QuestionMapper.xml"/>
         <mapper resource="mapper/QuestionOptionMapper.xml"/>
+        <mapper resource="mapper/PaperInfoMapper.xml"/>
         <!--        <mapper resource="mapper/ScoreMapper.xml"/>-->
-        <!--        <mapper resource="mapper/PaperMapper.xml"/>-->
     </mappers>
 </configuration>
