@@ -53,19 +53,19 @@ public class QuestionController {
         switch (action) {
             case "single":
                 SingleQuestionDTO singleQuestionDTO = JSONObject.parseObject(json, SingleQuestionDTO.class);
-                result = questionService.addSingleQuestion(singleQuestionDTO);
+                result = questionService.addSingleQuestion(singleQuestionDTO,request);
                 break;
             case "multi":
                 MultiQuestionDTO multiQuestionDTO = JSONObject.parseObject(json, MultiQuestionDTO.class);
-                result = questionService.addMultiQuestion(multiQuestionDTO);
+                result = questionService.addMultiQuestion(multiQuestionDTO,request);
                 break;
             case "judge":
                 JudgeQuestionDTO judgeQuestionDTO = JSONObject.parseObject(json, JudgeQuestionDTO.class);
-                result = questionService.addJudgeQuestion(judgeQuestionDTO);
+                result = questionService.addJudgeQuestion(judgeQuestionDTO,request);
                 break;
             case "fill":
                 FillQuestionDTO fillQuestionDTO = JSONObject.parseObject(json, FillQuestionDTO.class);
-                result = questionService.addFillQuestion(fillQuestionDTO);
+                result = questionService.addFillQuestion(fillQuestionDTO,request);
                 break;
             default:
                 return R.fail(ADD_FAIL);

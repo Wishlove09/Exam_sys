@@ -11,15 +11,18 @@ import edu.xmut.examsys.bean.vo.OptionVO;
 import edu.xmut.examsys.bean.vo.PageVO;
 import edu.xmut.examsys.bean.vo.QuestionDetailsVO;
 import edu.xmut.examsys.bean.vo.QuestionVO;
+import edu.xmut.examsys.constants.SystemConstant;
 import edu.xmut.examsys.mapper.QuestionMapper;
 import edu.xmut.examsys.mapper.QuestionOptionMapper;
 import edu.xmut.examsys.mapper.UserMapper;
 import edu.xmut.examsys.service.QuestionService;
+import edu.xmut.examsys.utils.JwtTokenUtil;
 import edu.xmut.examsys.utils.SnowflakeUtils;
 import edu.xmut.examsys.utils.SqlSessionFactoryUtils;
 import fun.shuofeng.myspringmvc.annotaion.Service;
 import org.apache.ibatis.session.SqlSession;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,6 +35,7 @@ import java.util.stream.Collectors;
 @Service
 public class QuestionServiceImpl implements QuestionService {
 
+    private final JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
 
     private final SqlSession sqlSession;
     private QuestionMapper questionMapper;
@@ -48,7 +52,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public PageVO pages(PageDTO pageDTO) {
         PageHelper.startPage(pageDTO.getPageNum(), pageDTO.getPageSize());
-        Page<Question> questionPage = questionMapper.pages(pageDTO.getSearch(),pageDTO.getType());
+        Page<Question> questionPage = questionMapper.pages(pageDTO.getSearch(), pageDTO.getType());
         // mysql区分大小写吗？ 在windows 不区分 在linux区分
         List<QuestionVO> collect = questionPage.getResult().stream().map(question -> {
             User user = userMapper.selectById(question.getCreator());
@@ -70,7 +74,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Boolean addSingleQuestion(SingleQuestionDTO singleQuestionDTO) {
+    public Boolean addSingleQuestion(SingleQuestionDTO singleQuestionDTO, HttpServletRequest request) {
         Question question = new Question();
         // 雪花算法生成试题ID
         String qid = SnowflakeUtils.nextIdStr();
@@ -105,16 +109,17 @@ public class QuestionServiceImpl implements QuestionService {
         question.setLevel(singleQuestionDTO.getLevel());
         question.setImage(singleQuestionDTO.getImage());
         question.setContent(singleQuestionDTO.getContent());
-        question.setCreator(1111111L);
         question.setAnalysis(singleQuestionDTO.getAnalysis());
+        String token = request.getHeader(SystemConstant.AUTHORIZATION);
+        String userId = jwtTokenUtil.getUserId(token);
+        question.setCreator(Long.valueOf(userId));
         Integer result = questionMapper.insert(question);
-
         sqlSession.commit();
         return result > 0;
     }
 
     @Override
-    public Boolean addMultiQuestion(MultiQuestionDTO multiQuestionDTO) {
+    public Boolean addMultiQuestion(MultiQuestionDTO multiQuestionDTO, HttpServletRequest request) {
         List<String> rightAnswer = multiQuestionDTO.getRightAnswer();
 
         // 雪花算法生成唯一试题ID
@@ -148,7 +153,9 @@ public class QuestionServiceImpl implements QuestionService {
         question.setImage(multiQuestionDTO.getImage());
         // question.setOptionId();
         question.setContent(multiQuestionDTO.getContent());
-        question.setCreator(22222222L);
+        String token = request.getHeader(SystemConstant.AUTHORIZATION);
+        String userId = jwtTokenUtil.getUserId(token);
+        question.setCreator(Long.valueOf(userId));
         question.setAnalysis(multiQuestionDTO.getAnalysis());
         Integer result = questionMapper.insert(question);
 
@@ -157,7 +164,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Boolean addJudgeQuestion(JudgeQuestionDTO judgeQuestionDTO) {
+    public Boolean addJudgeQuestion(JudgeQuestionDTO judgeQuestionDTO, HttpServletRequest request) {
         // 生成试题ID
         String qid = SnowflakeUtils.nextIdStr();
         Question question = new Question();
@@ -167,7 +174,9 @@ public class QuestionServiceImpl implements QuestionService {
         question.setLevel(judgeQuestionDTO.getLevel());
         question.setImage(judgeQuestionDTO.getImage());
         question.setContent(judgeQuestionDTO.getContent());
-        question.setCreator(3333333L);
+        String token = request.getHeader(SystemConstant.AUTHORIZATION);
+        String userId = jwtTokenUtil.getUserId(token);
+        question.setCreator(Long.valueOf(userId));
         question.setAnalysis(judgeQuestionDTO.getAnalysis());
         // 答案
         String answer = judgeQuestionDTO.getAnswer();
@@ -196,7 +205,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Boolean addFillQuestion(FillQuestionDTO fillQuestionDTO) {
+    public Boolean addFillQuestion(FillQuestionDTO fillQuestionDTO, HttpServletRequest request) {
 
         String qid = SnowflakeUtils.nextIdStr();
         Question question = new Question();
@@ -205,7 +214,9 @@ public class QuestionServiceImpl implements QuestionService {
         question.setImage(fillQuestionDTO.getImage());
         question.setOptionId(fillQuestionDTO.getAnalysis());
         question.setContent(fillQuestionDTO.getContent());
-        question.setCreator(444444L);
+        String token = request.getHeader(SystemConstant.AUTHORIZATION);
+        String userId = jwtTokenUtil.getUserId(token);
+        question.setCreator(Long.valueOf(userId));
         question.setAnalysis(fillQuestionDTO.getAnalysis());
         question.setId(qid);
 
