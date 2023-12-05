@@ -48,8 +48,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public PageVO pages(PageDTO pageDTO) {
         PageHelper.startPage(pageDTO.getPageNum(), pageDTO.getPageSize());
-        Page<Question> questionPage = questionMapper.pages(pageDTO.getSearch());
-
+        Page<Question> questionPage = questionMapper.pages(pageDTO.getSearch(),pageDTO.getType());
         // mysql区分大小写吗？ 在windows 不区分 在linux区分
         List<QuestionVO> collect = questionPage.getResult().stream().map(question -> {
             User user = userMapper.selectById(question.getCreator());

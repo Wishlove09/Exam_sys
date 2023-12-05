@@ -4,18 +4,19 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="edu.xmut.examsys.mapper.QuestionMapper">
 
+
     <resultMap id="BaseResultMap" type="edu.xmut.examsys.bean.Question">
-            <id property="id" column="id" jdbcType="VARCHAR"/>
-            <result property="type" column="type" jdbcType="TINYINT"/>
-            <result property="level" column="level" jdbcType="INTEGER"/>
-            <result property="image" column="image" jdbcType="VARCHAR"/>
-            <result property="optionId" column="option_id" jdbcType="VARCHAR"/>
-            <result property="content" column="content" jdbcType="VARCHAR"/>
-            <result property="creator" column="creator" jdbcType="BIGINT"/>
-            <result property="analysis" column="analysis" jdbcType="VARCHAR"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-            <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="TINYINT"/>
+        <result property="level" column="level" jdbcType="INTEGER"/>
+        <result property="image" column="image" jdbcType="VARCHAR"/>
+        <result property="optionId" column="option_id" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="creator" column="creator" jdbcType="BIGINT"/>
+        <result property="analysis" column="analysis" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -28,12 +29,18 @@
         insert into question(id, type, level, image, option_id, content, creator, analysis)
         values (#{id}, #{type}, #{level}, #{image}, #{optionId}, #{content}, #{creator}, #{analysis})
     </insert>
-    <select id="pages" resultType="edu.xmut.examsys.bean.Question">
+    <select id="pages"
+            useCache="false"
+            resultType="edu.xmut.examsys.bean.Question"
+            flushCache="true">
         select *
         from question
         <where>
             <if test="search !=null ">
-                content like concat('%', #{search}, '%')
+                and (content like concat('%', #{search}, '%'))
+            </if>
+            <if test="type !=null">
+                and type = #{type}
             </if>
         </where>
         order by update_time
