@@ -1,33 +1,45 @@
 package edu.xmut.examsys.bean.vo;
 
+import lombok.Data;
+
+import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @author 朔风
- * @date 2023-11-13 23:55
+ * 考试信息表
+ * @TableName exam_info
  */
-public class ExamInfoVO {
-    private Long examId;
-
+@Data
+public class ExamInfoVO implements Serializable {
     /**
-     * 考试简介
+     * 考试id
      */
-    private String examDesc;
+    private Long examId;
 
     /**
      * 考试名称
      */
-    private String examName;
+    private String title;
 
     /**
-     * 创建人
+     * 考试简介
      */
-    private Long creatorId;
+    private String desc;
 
     /**
      * 注意事项
      */
     private String attention;
+
+    /**
+     * 创建人
+     */
+    private String creator;
+
+    /**
+     * 考试状态（0-未开始，1-进行中，2-结束）
+     */
+    private Integer status;
 
     /**
      * 开始时间
@@ -40,12 +52,26 @@ public class ExamInfoVO {
     private Date endTime;
 
     /**
-     * 考试状态（0-未开始，1-进行中，2-结束）
+     * 总时长（分钟）
      */
-    private Integer status;
+    private Integer totalTime;
+
+    /**
+     * 是否限时（0-不限时，1-限时）
+     */
+    private Integer timeLimit;
 
     /**
      * 总分
      */
     private String totalScore;
+
+    /**
+     * 扩展参数
+     */
+    private String params;
+
+
+
+    private static final long serialVersionUID = 1L;
 }
