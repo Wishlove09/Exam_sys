@@ -5,6 +5,7 @@ import com.alibaba.fastjson2.JSONObject;
 import edu.xmut.examsys.bean.dto.PageDTO;
 import edu.xmut.examsys.bean.dto.PageInfoDTO;
 import edu.xmut.examsys.bean.dto.PaperDetailsDTO;
+import edu.xmut.examsys.bean.vo.PageInfoVO;
 import edu.xmut.examsys.bean.vo.PageVO;
 import edu.xmut.examsys.exception.GlobalException;
 import edu.xmut.examsys.service.PaperService;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.*;
 
+import java.util.List;
 import java.util.Objects;
 
 import static edu.xmut.examsys.constants.SystemConstant.MISSING_ARGUMENT;
@@ -81,4 +83,18 @@ public class PaperController {
         return result ? R.ok("更新成功") : R.fail("更新失败");
 
     }
+
+
+    @RequestMapping("/search")
+    public R search(HttpServletRequest request) {
+        String q = request.getParameter("q");
+        if (StringUtils.isBlank(q)) {
+            throw new GlobalException(MISSING_ARGUMENT);
+
+        }
+        List<PageInfoVO> list = paperService.getAllBySearch(q);
+        return R.ok(list);
+    }
+
+
 }
