@@ -7,6 +7,7 @@ import edu.xmut.examsys.bean.PaperInfo;
 import edu.xmut.examsys.bean.dto.PageDTO;
 import edu.xmut.examsys.bean.dto.PageInfoDTO;
 import edu.xmut.examsys.bean.dto.PaperDetailsDTO;
+import edu.xmut.examsys.bean.vo.PageInfoVO;
 import edu.xmut.examsys.bean.vo.PageVO;
 import edu.xmut.examsys.bean.vo.PaperInfoVO;
 import edu.xmut.examsys.constants.SystemConstant;
@@ -106,5 +107,18 @@ public class PaperServiceImpl implements PaperService {
 
 
         return result > 0;
+    }
+
+    @Override
+    public List<PageInfoVO> getAllBySearch(String search) {
+
+        Page<PaperInfo> pages = paperInfoMapper.pages(search);
+        List<PaperInfo> list = pages.getResult();
+        return list.stream()
+                .map(paperInfo -> PageInfoVO.builder()
+                        .id(paperInfo.getId())
+                        .title(paperInfo.getTitle())
+                        .desc(paperInfo.getDesc())
+                        .build()).collect(Collectors.toList());
     }
 }
