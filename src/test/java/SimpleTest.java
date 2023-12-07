@@ -1,4 +1,5 @@
 import cn.hutool.core.lang.generator.SnowflakeGenerator;
+import cn.hutool.core.util.IdUtil;
 import edu.xmut.examsys.bean.User;
 import edu.xmut.examsys.utils.JwtTokenUtil;
 import edu.xmut.examsys.utils.SnowflakeUtils;
@@ -139,6 +140,11 @@ public class SimpleTest {
         }
 
 
+    }
+
+    @Test
+    public void testFastUUID() {
+        System.out.println(System.currentTimeMillis());
     }
 
 
