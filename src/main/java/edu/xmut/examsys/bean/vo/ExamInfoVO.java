@@ -7,6 +7,7 @@ import java.util.Date;
 
 /**
  * 考试信息表
+ *
  * @TableName exam_info
  */
 @Data
@@ -35,6 +36,10 @@ public class ExamInfoVO implements Serializable {
      * 创建人
      */
     private String creator;
+
+
+    private String paper;
+
 
     /**
      * 考试状态（0-未开始，1-进行中，2-结束）
@@ -70,7 +75,6 @@ public class ExamInfoVO implements Serializable {
      * 扩展参数
      */
     private String params;
-
 
 
     private static final long serialVersionUID = 1L;
