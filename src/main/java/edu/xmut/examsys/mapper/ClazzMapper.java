@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface ClazzMapper {
 
-    ClazzStudent selectCStById(Long userId);
+    List<ClazzStudent> selectCStById(Long userId);
 
     Clazz selectClazzById(Long clazzId);
 
