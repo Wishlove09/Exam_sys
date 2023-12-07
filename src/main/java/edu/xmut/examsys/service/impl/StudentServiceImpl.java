@@ -57,12 +57,12 @@ public class StudentServiceImpl implements StudentService {
                     studentVO.setBirth(DateUtil.format(user.getBirth(), "yyyy-MM-dd"));
                     studentVO.setPhone(user.getPhone());
                     studentVO.setStatus(user.getStatus());
-
-                    ClazzStudent clazzStudent = clazzMapper.selectCStById(user.getId());
-                    if (Objects.nonNull(clazzStudent)) {
-                        Clazz clazz = clazzMapper.selectClazzById(clazzStudent.getClazzId());
-                        studentVO.setClazzName(clazz.getClassName());
-                    }
+                    // todo
+                    // ClazzStudent clazzStudent = clazzMapper.selectCStById(user.getId());
+                    // if (Objects.nonNull(clazzStudent)) {
+                    //     Clazz clazz = clazzMapper.selectClazzById(clazzStudent.getClazzId());
+                    //     studentVO.setClazzName(clazz.getClassName());
+                    // }
                     return studentVO;
                 }).collect(Collectors.toList());
 
@@ -82,10 +82,11 @@ public class StudentServiceImpl implements StudentService {
         studentVO.setSex(user.getSex());
         studentVO.setRealName(user.getRealName());
         studentVO.setEmail(user.getEmail());
-        ClazzStudent clazzStudent = clazzMapper.selectCStById(user.getId());
-        if (Objects.nonNull(clazzStudent)) {
-            studentVO.setClazzId(clazzStudent.getClazzId());
-        }
+        // todo
+        // ClazzStudent clazzStudent = clazzMapper.selectCStById(user.getId());
+        // if (Objects.nonNull(clazzStudent)) {
+        //     studentVO.setClazzId(clazzStudent.getClazzId());
+        // }
         studentVO.setBirth(DateUtil.format(user.getBirth(), "yyyy-MM-dd"));
         studentVO.setPhone(user.getPhone());
 
