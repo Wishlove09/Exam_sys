@@ -6,6 +6,7 @@
 
     <resultMap id="BaseResultMap" type="edu.xmut.examsys.bean.ExamInfo">
             <id property="examId" column="exam_id" jdbcType="BIGINT"/>
+            <id property="paperId" column="paperId" jdbcType="BIGINT"/>
             <result property="title" column="title" jdbcType="VARCHAR"/>
             <result property="desc" column="desc" jdbcType="VARCHAR"/>
             <result property="attention" column="attention" jdbcType="VARCHAR"/>
@@ -22,15 +23,30 @@
             <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        exam_id,title,desc,
-        attention,creator,status,
-        start_time,end_time,total_time,
-        time_limit,total_score,params,
-        create_time,update_time,is_deleted
-    </sql>
+
+    <insert id="insert">
+        insert into exam_info(exam_id, paperId, title, `desc`, attention, creator, start_time, end_time,
+                              total_time, time_limit, total_score, params)
+        VALUES (#{examId}, #{paperId}, #{title}, #{desc}, #{attention}, #{creator}, #{startTime}, #{endTime},
+                #{totalTime}, #{timeLimit}, #{totalScore}, #{params})
+    </insert>
     <select id="pages" resultType="edu.xmut.examsys.bean.ExamInfo">
         select *
         from exam_info
+    </select>
+    <select id="selectById" resultType="edu.xmut.examsys.bean.ExamInfo">
+        select * from exam_info
+        <where>
+            <if test="examIds !=null">
+                exam_id
+                <foreach collection="examIds" item="id" open=" in (" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="search !=null">
+                and (title like concat('%',#{search},'%'))
+            </if>
+        </where>
+
     </select>
 </mapper>
