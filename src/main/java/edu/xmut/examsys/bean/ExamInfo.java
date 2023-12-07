@@ -2,10 +2,12 @@ package edu.xmut.examsys.bean;
 
 import java.io.Serializable;
 import java.util.Date;
+
 import lombok.Data;
 
 /**
  * 考试信息表
+ *
  * @TableName exam_info
  */
 @Data
@@ -14,6 +16,10 @@ public class ExamInfo implements Serializable {
      * 考试id
      */
     private Long examId;
+    /**
+     * 试卷id
+     */
+    private Long paperId;
 
     /**
      * 考试名称
