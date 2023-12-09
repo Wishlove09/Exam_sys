@@ -76,6 +76,8 @@ public class ExamInfoVO implements Serializable {
      */
     private String params;
 
+    private String[] examDate;
+
 
     private static final long serialVersionUID = 1L;
 }
