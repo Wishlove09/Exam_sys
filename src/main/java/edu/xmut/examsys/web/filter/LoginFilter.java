@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static edu.xmut.examsys.constants.SystemConstant.USER_ID;
+import static edu.xmut.examsys.constants.SystemConstant.USER_REAL_NAME;
+
 /**
  * @author 朔风
  * @date 2023-11-30 11:24
@@ -39,6 +42,8 @@ public class LoginFilter extends SecurityFilter {
             String userId = jwtTokenUtil.getUserId(token);
             String realName = jwtTokenUtil.getRealName(token);
             log.info("当前登录的用户为：{}-{}", userId, realName);
+            request.setAttribute(USER_ID, userId);
+            request.setAttribute(USER_REAL_NAME, realName);
             // 放行
             chain.doFilter(request, response);
             log.info("Token有效>>>>>>>>>>>>>>>>>放行");

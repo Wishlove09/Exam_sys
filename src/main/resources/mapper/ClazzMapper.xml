@@ -58,4 +58,14 @@
         from clazz_student
         where clazz_id = #{clazzId}
     </select>
+    <select id="selectBySearch" resultType="edu.xmut.examsys.bean.Clazz">
+        select * from clazz
+        <where>
+            <if test="search !=null">
+                class_name like concat('%',#{search},'%')
+                or
+                id like concat('%',#{search},'%')
+            </if>
+        </where>
+    </select>
 </mapper>

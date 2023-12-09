@@ -1,7 +1,9 @@
 package edu.xmut.examsys.web.student;
 
 import com.alibaba.fastjson2.JSONObject;
+import edu.xmut.examsys.bean.ExamInfo;
 import edu.xmut.examsys.bean.dto.PageDTO;
+import edu.xmut.examsys.bean.vo.ExamDetailsVO;
 import edu.xmut.examsys.bean.vo.PageVO;
 import edu.xmut.examsys.exception.GlobalException;
 import edu.xmut.examsys.service.ExamService;
@@ -45,4 +47,15 @@ public class ExamController {
         return R.ok(pageVO);
     }
 
+
+    @RequestMapping("/details")
+    public R details(HttpServletRequest request) {
+        String examId = request.getParameter("examId");
+        if (StringUtils.isBlank(examId)) {
+            throw new GlobalException(MISSING_ARGUMENT);
+        }
+        ExamDetailsVO examDetailsVO = examService.getDetailsById(examId);
+
+        return R.ok(examDetailsVO);
+    }
 }

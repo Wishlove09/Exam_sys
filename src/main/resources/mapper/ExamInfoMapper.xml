@@ -30,11 +30,22 @@
         VALUES (#{examId}, #{paperId}, #{title}, #{desc}, #{attention}, #{creator}, #{startTime}, #{endTime},
                 #{totalTime}, #{timeLimit}, #{totalScore}, #{params})
     </insert>
+    <update id="updateStatus">
+        update exam_info
+        <set>
+            <if test="status !=null">
+                `status` = #{status}
+            </if>
+        </set>
+        where exam_id = #{examId}
+    </update>
     <select id="pages" resultType="edu.xmut.examsys.bean.ExamInfo">
         select *
         from exam_info
+        where creator = #{creator}
+        order by `status`
     </select>
-    <select id="selectById" resultType="edu.xmut.examsys.bean.ExamInfo">
+    <select id="selectByIds" resultType="edu.xmut.examsys.bean.ExamInfo">
         select * from exam_info
         <where>
             <if test="examIds !=null">
@@ -48,5 +59,13 @@
             </if>
         </where>
 
+    </select>
+    <select id="selectById" resultType="edu.xmut.examsys.bean.ExamInfo">
+        select *
+        from exam_info
+        where exam_id = #{id}
+    </select>
+    <select id="selectAll" resultType="edu.xmut.examsys.bean.ExamInfo">
+        select exam_id,status,start_time,end_time,title from exam_info
     </select>
 </mapper>

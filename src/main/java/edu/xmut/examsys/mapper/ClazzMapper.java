@@ -34,6 +34,8 @@ public interface ClazzMapper {
     Integer countByClazzId(Long clazzId);
 
     Integer deleteById(Long id);
+
+    List<Clazz> selectBySearch(String q);
 }
 
 

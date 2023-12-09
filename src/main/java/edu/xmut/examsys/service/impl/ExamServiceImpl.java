@@ -6,15 +6,14 @@ import com.github.pagehelper.PageHelper;
 import edu.xmut.examsys.bean.ClazzStudent;
 import edu.xmut.examsys.bean.ExamInfo;
 import edu.xmut.examsys.bean.ExamParticipants;
+import edu.xmut.examsys.bean.PaperInfo;
 import edu.xmut.examsys.bean.dto.ExamAddDTO;
 import edu.xmut.examsys.bean.dto.PageDTO;
+import edu.xmut.examsys.bean.vo.ExamDetailsVO;
 import edu.xmut.examsys.bean.vo.ExamInfoVO;
 import edu.xmut.examsys.bean.vo.PageVO;
 import edu.xmut.examsys.constants.SystemConstant;
-import edu.xmut.examsys.mapper.ClazzMapper;
-import edu.xmut.examsys.mapper.ExamInfoMapper;
-import edu.xmut.examsys.mapper.ExamParticipantsMapper;
-import edu.xmut.examsys.mapper.UserMapper;
+import edu.xmut.examsys.mapper.*;
 import edu.xmut.examsys.service.ExamService;
 import edu.xmut.examsys.utils.JwtTokenUtil;
 import edu.xmut.examsys.utils.SqlSessionFactoryUtils;
@@ -38,6 +37,7 @@ public class ExamServiceImpl implements ExamService {
     private final ExamParticipantsMapper examParticipantsMapper;
     private final ClazzMapper clazzMapper;
     private final UserMapper userMapper;
+    private final PaperInfoMapper paperInfoMapper;
 
     public ExamServiceImpl() {
         sqlSession = SqlSessionFactoryUtils.openSession(true);
@@ -45,18 +45,20 @@ public class ExamServiceImpl implements ExamService {
         userMapper = sqlSession.getMapper(UserMapper.class);
         examParticipantsMapper = sqlSession.getMapper(ExamParticipantsMapper.class);
         clazzMapper = sqlSession.getMapper(ClazzMapper.class);
+        paperInfoMapper = sqlSession.getMapper(PaperInfoMapper.class);
     }
 
     @Override
-    public PageVO pages(PageDTO pageDTO) {
+    public PageVO pages(PageDTO pageDTO, Long userId) {
         PageHelper.startPage(pageDTO.getPageNum(), pageDTO.getPageSize());
-        Page<ExamInfo> page = examInfoMapper.pages();
+        Page<ExamInfo> page = examInfoMapper.pages(userId);
 
         List<ExamInfoVO> collect = page.getResult().stream()
                 .map(examInfo -> {
                     ExamInfoVO examInfoVO = new ExamInfoVO();
                     BeanUtil.copyProperties(examInfo, examInfoVO);
                     examInfoVO.setCreator(userMapper.selectById(examInfo.getCreator()).getRealName());
+                    examInfoVO.setPaper(paperInfoMapper.selectById(examInfo.getPaperId()).getTitle());
                     return examInfoVO;
                 }).collect(Collectors.toList());
 
@@ -112,7 +114,7 @@ public class ExamServiceImpl implements ExamService {
 
         PageHelper.startPage(pageDTO.getPageNum(), pageDTO.getPageSize());
         // 根据考试id查询所有考试
-        Page<ExamInfo> page = examInfoMapper.selectById(examIds,pageDTO.getSearch());
+        Page<ExamInfo> page = examInfoMapper.selectByIds(examIds, pageDTO.getSearch());
 
         List<ExamInfoVO> collect = page.getResult().stream()
                 .map(examInfo -> {
@@ -127,5 +129,19 @@ public class ExamServiceImpl implements ExamService {
                 .total(page.getTotal())
                 .records(collect)
                 .build();
+    }
+
+    @Override
+    public ExamDetailsVO getDetailsById(String examId) {
+
+        ExamDetailsVO examDetailsVO = new ExamDetailsVO();
+
+        ExamInfo examInfo = examInfoMapper.selectById(Long.valueOf(examId));
+        BeanUtil.copyProperties(examInfo, examDetailsVO);
+
+        PaperInfo paperInfo = paperInfoMapper.selectById(examInfo.getPaperId());
+        examDetailsVO.setPaperInfo(paperInfo);
+
+        return examDetailsVO;
     }
 }

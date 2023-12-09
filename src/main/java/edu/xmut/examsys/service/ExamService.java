@@ -1,7 +1,9 @@
 package edu.xmut.examsys.service;
 
+import edu.xmut.examsys.bean.ExamInfo;
 import edu.xmut.examsys.bean.dto.ExamAddDTO;
 import edu.xmut.examsys.bean.dto.PageDTO;
+import edu.xmut.examsys.bean.vo.ExamDetailsVO;
 import edu.xmut.examsys.bean.vo.PageVO;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,9 +13,11 @@ import javax.servlet.http.HttpServletRequest;
  * @date 2023-12-06 21:23
  */
 public interface ExamService {
-    PageVO pages(PageDTO pageDTO);
+    PageVO pages(PageDTO pageDTO, Long userId);
 
     Boolean addExam(ExamAddDTO examAddDTO, HttpServletRequest request);
 
     PageVO listByUser(PageDTO pageDTO, String userId);
+
+    ExamDetailsVO getDetailsById(String examId);
 }

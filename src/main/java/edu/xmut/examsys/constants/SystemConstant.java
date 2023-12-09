@@ -13,4 +13,8 @@ public interface SystemConstant {
     String ADD_SUCCESS = "添加成功";
 
     String AUTHORIZATION = "Authorization";
+
+    String USER_ID = "userId";
+
+    String USER_REAL_NAME = "realName";
 }

@@ -92,4 +92,17 @@ public class ClazzServiceImpl implements ClazzService {
 
         return result > 0;
     }
+
+    @Override
+    public List<ClazzVO> search(String q) {
+
+
+        List<Clazz> clazzList = clazzMapper.selectBySearch(q);
+
+        return clazzList.stream()
+                .map(clazz -> ClazzVO.builder()
+                        .classId(clazz.getId())
+                        .className(clazz.getClassName())
+                        .build()).collect(Collectors.toList());
+    }
 }

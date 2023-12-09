@@ -17,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 
 import static edu.xmut.examsys.constants.SystemConstant.MISSING_ARGUMENT;
+import static edu.xmut.examsys.constants.SystemConstant.USER_ID;
 
 /**
  * @author 朔风
@@ -31,13 +32,13 @@ public class ExamManageController {
 
 
     @RequestMapping(value = "/pages", method = "post")
-    public R pages(String json) {
+    public R pages(String json, HttpServletRequest request) {
         if (StringUtils.isBlank(json)) {
             throw new GlobalException(MISSING_ARGUMENT);
         }
         PageDTO pageDTO = JSONObject.parseObject(json, PageDTO.class);
-
-        PageVO pageVO = examService.pages(pageDTO);
+        Long userId = Long.valueOf((String) request.getAttribute(USER_ID));
+        PageVO pageVO = examService.pages(pageDTO, userId);
 
         return R.ok(pageVO);
     }
@@ -51,7 +52,7 @@ public class ExamManageController {
 
         ExamAddDTO examAddDTO = JSONObject.parseObject(json, ExamAddDTO.class);
 
-        Boolean result = examService.addExam(examAddDTO,request);
+        Boolean result = examService.addExam(examAddDTO, request);
 
         return result ? R.ok("添加成功") : R.fail("添加失败");
     }

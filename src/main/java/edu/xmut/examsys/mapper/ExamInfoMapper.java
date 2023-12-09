@@ -14,15 +14,22 @@ import java.util.List;
  */
 public interface ExamInfoMapper {
 
-    Page<ExamInfo> pages();
+    Page<ExamInfo> pages(Long creator);
 
     Integer insert(ExamInfo examInfo);
 
-    Page<ExamInfo> selectById(
+    Page<ExamInfo> selectByIds(
             @Param("examIds")
             List<Long> examIds,
             @Param("search")
             String search);
+
+    ExamInfo selectById(Long id);
+
+    List<ExamInfo> selectAll();
+
+    Integer updateStatus(ExamInfo examInfo);
+
 }
 
 

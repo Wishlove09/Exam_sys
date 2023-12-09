@@ -48,5 +48,6 @@
         <mapper resource="mapper/PaperInfoMapper.xml"/>
         <mapper resource="mapper/PaperQuestionMapper.xml"/>
         <mapper resource="mapper/ExamInfoMapper.xml"/>
+        <mapper resource="mapper/ExamParticipantsMapper.xml"/>
     </mappers>
 </configuration>

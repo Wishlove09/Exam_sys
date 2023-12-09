@@ -17,6 +17,8 @@ public interface PaperInfoMapper {
     Integer insert(PaperInfo paperInfo);
 
     Integer update(PageInfoDTO pageInfoDTO);
+
+    PaperInfo selectById(Long paperId);
 }
 
 

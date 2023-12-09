@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSONObject;
 import edu.xmut.examsys.bean.Clazz;
 import edu.xmut.examsys.bean.dto.ClazzDTO;
 import edu.xmut.examsys.bean.dto.PageDTO;
+import edu.xmut.examsys.bean.vo.ClazzVO;
 import edu.xmut.examsys.bean.vo.PageVO;
 import edu.xmut.examsys.exception.GlobalException;
 import edu.xmut.examsys.service.ClazzService;
@@ -15,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Objects;
 
 import static edu.xmut.examsys.constants.SystemConstant.MISSING_ARGUMENT;
 
@@ -23,7 +25,7 @@ import static edu.xmut.examsys.constants.SystemConstant.MISSING_ARGUMENT;
  * @date 2023-11-27 21:58
  */
 @Controller
-@RequestMapping("/clazz")
+@RequestMapping("/class")
 public class ClazzController {
 
     @Autowired
@@ -63,5 +65,18 @@ public class ClazzController {
         Boolean result = clazzService.deleteById(id);
 
         return result ? R.ok() : R.fail();
+    }
+
+
+    @RequestMapping("/get/search")
+    public R search(HttpServletRequest request) {
+        String q = request.getParameter("q");
+        if (Objects.isNull(q)) {
+            throw new GlobalException(MISSING_ARGUMENT);
+        }
+
+        List<ClazzVO> clazzVOS = clazzService.search(q);
+
+        return R.ok(clazzVOS);
     }
 }

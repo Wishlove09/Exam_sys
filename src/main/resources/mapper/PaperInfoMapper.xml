@@ -68,4 +68,12 @@
         </where>
         order by create_time desc
     </select>
+    <select id="selectById" resultType="edu.xmut.examsys.bean.PaperInfo">
+        select * from paper_info
+        <where>
+            <if test="paperId !=null">
+                id = #{paperId}
+            </if>
+        </where>
+    </select>
 </mapper>
