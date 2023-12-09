@@ -30,6 +30,7 @@ public interface ExamInfoMapper {
 
     Integer updateStatus(ExamInfo examInfo);
 
+    Integer update(ExamInfo examInfo);
 }
 
 

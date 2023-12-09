@@ -39,6 +39,39 @@
         </set>
         where exam_id = #{examId}
     </update>
+    <update id="update">
+        update exam_info
+        <set>
+            <if test="title !=null">
+                title = #{title},
+            </if>
+            <if test="attention !=null">
+                attention = #{attention},
+            </if>
+            <if test="desc !=null">
+                `desc` = #{desc},
+            </if>
+            <if test="status !=null">
+                `status` = #{status},
+            </if>
+            <if test="timeLimit !=null">
+                `time_limit` = #{timeLimit},
+            </if>
+            <if test="totalScore !=null">
+                total_score = #{totalScore},
+            </if>
+            <if test="totalTime !=null">
+                total_time = #{totalTime},
+            </if>
+            <if test="startTime !=null">
+                start_time = #{startTime},
+            </if>
+            <if test="endTime !=null">
+                end_time = #{endTime}
+            </if>
+        </set>
+        where exam_id = #{examId}
+    </update>
     <select id="pages" resultType="edu.xmut.examsys.bean.ExamInfo">
         select *
         from exam_info
