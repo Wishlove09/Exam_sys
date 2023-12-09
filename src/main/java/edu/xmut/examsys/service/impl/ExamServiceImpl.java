@@ -1,6 +1,7 @@
 package edu.xmut.examsys.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.date.DateUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import edu.xmut.examsys.bean.ClazzStudent;
@@ -8,6 +9,7 @@ import edu.xmut.examsys.bean.ExamInfo;
 import edu.xmut.examsys.bean.ExamParticipants;
 import edu.xmut.examsys.bean.PaperInfo;
 import edu.xmut.examsys.bean.dto.ExamAddDTO;
+import edu.xmut.examsys.bean.dto.ExamInfoDTO;
 import edu.xmut.examsys.bean.dto.PageDTO;
 import edu.xmut.examsys.bean.vo.ExamDetailsVO;
 import edu.xmut.examsys.bean.vo.ExamInfoVO;
@@ -22,6 +24,7 @@ import org.apache.ibatis.session.SqlSession;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -85,6 +88,8 @@ public class ExamServiceImpl implements ExamService {
 
         Integer r = examInfoMapper.insert(examInfo);
 
+        sqlSession.commit();
+
         return r > 0;
     }
 
@@ -143,5 +148,38 @@ public class ExamServiceImpl implements ExamService {
         examDetailsVO.setPaperInfo(paperInfo);
 
         return examDetailsVO;
+    }
+
+    @Override
+    public ExamInfoVO getExamInfoById(String examId) {
+        ExamInfoVO examInfoVO = new ExamInfoVO();
+        ExamInfo examInfo = examInfoMapper.selectById(Long.valueOf(examId));
+        BeanUtil.copyProperties(examInfo, examInfoVO);
+        return examInfoVO;
+    }
+
+    @Override
+    public Boolean update(ExamInfoDTO examInfoDTO) {
+        ExamInfo examInfo = new ExamInfo();
+        BeanUtil.copyProperties(examInfoDTO, examInfo);
+        List<String> examDate = examInfoDTO.getExamDate();
+        examInfo.setStartTime(DateUtil.parse(examDate.get(0)));
+        examInfo.setEndTime(DateUtil.parse(examDate.get(1)));
+
+        Date now = DateUtil.date();
+        Date startTime = examInfo.getStartTime();
+        Date endTime = examInfo.getEndTime();
+        if (now.compareTo(startTime) >= 0 && now.compareTo(endTime) < 0) {
+            examInfo.setStatus(1);
+        } else if (now.compareTo(startTime) < 0) {
+            examInfo.setStatus(0);
+        } else if (now.compareTo(endTime) > 0) {
+            examInfo.setStatus(2);
+        }
+
+        Integer result = examInfoMapper.update(examInfo);
+        sqlSession.commit();
+
+        return result > 0;
     }
 }
