@@ -7,6 +7,7 @@ import edu.xmut.examsys.bean.dto.PageDTO;
 import edu.xmut.examsys.bean.vo.ExamDetailsVO;
 import edu.xmut.examsys.bean.vo.ExamInfoVO;
 import edu.xmut.examsys.bean.vo.PageVO;
+import org.quartz.SchedulerException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,5 +26,7 @@ public interface ExamService {
 
     ExamInfoVO getExamInfoById(String examId);
 
-    Boolean update(ExamInfoDTO examInfoDTO);
+    Boolean update(ExamInfoDTO examInfoDTO) throws SchedulerException;
+
+    Boolean deleteById(String id);
 }

@@ -25,9 +25,9 @@
 
 
     <insert id="insert">
-        insert into exam_info(exam_id, paperId, title, `desc`, attention, creator, start_time, end_time,
+        insert into exam_info(exam_id, paperId, title, `desc`, attention, creator, `status`, start_time, end_time,
                               total_time, time_limit, total_score, params)
-        VALUES (#{examId}, #{paperId}, #{title}, #{desc}, #{attention}, #{creator}, #{startTime}, #{endTime},
+        VALUES (#{examId}, #{paperId}, #{title}, #{desc}, #{attention}, #{creator}, #{status}, #{startTime}, #{endTime},
                 #{totalTime}, #{timeLimit}, #{totalScore}, #{params})
     </insert>
     <update id="updateStatus">
@@ -72,10 +72,15 @@
         </set>
         where exam_id = #{examId}
     </update>
+    <delete id="deleteById">
+        update exam_info
+        set is_deleted = 1
+        where exam_id = #{id};
+    </delete>
     <select id="pages" resultType="edu.xmut.examsys.bean.ExamInfo">
         select *
         from exam_info
-        where creator = #{creator}
+        where creator = #{creator} and is_deleted = 0
         order by `status`
     </select>
     <select id="selectByIds" resultType="edu.xmut.examsys.bean.ExamInfo">
@@ -90,6 +95,7 @@
             <if test="search !=null">
                 and (title like concat('%',#{search},'%'))
             </if>
+            and is_deleted = 0
         </where>
 
     </select>
@@ -97,8 +103,11 @@
         select *
         from exam_info
         where exam_id = #{id}
+          and is_deleted = 0
+
     </select>
     <select id="selectAll" resultType="edu.xmut.examsys.bean.ExamInfo">
         select exam_id,status,start_time,end_time,title from exam_info
+        where is_deleted = 0
     </select>
 </mapper>

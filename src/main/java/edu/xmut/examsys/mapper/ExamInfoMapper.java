@@ -31,6 +31,8 @@ public interface ExamInfoMapper {
     Integer updateStatus(ExamInfo examInfo);
 
     Integer update(ExamInfo examInfo);
+
+    Integer deleteById(@Param("id") String id);
 }
 
 

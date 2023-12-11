@@ -16,6 +16,7 @@ import fun.shuofeng.myspringmvc.annotaion.Autowired;
 import fun.shuofeng.myspringmvc.annotaion.Controller;
 import fun.shuofeng.myspringmvc.annotaion.RequestMapping;
 import org.apache.commons.lang3.StringUtils;
+import org.quartz.SchedulerException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -80,7 +81,7 @@ public class ExamManageController {
 
 
     @RequestMapping(value = "/update", method = "post")
-    public R update(String json) {
+    public R update(String json) throws SchedulerException {
         if (StringUtils.isBlank(json)) {
             throw new GlobalException(MISSING_ARGUMENT);
         }
@@ -88,7 +89,20 @@ public class ExamManageController {
 
         Boolean update = examService.update(examInfoDTO);
 
-
         return update ? R.ok() : R.fail();
+    }
+
+
+    @RequestMapping("/delete")
+    public R delete(HttpServletRequest request) {
+        String id = request.getParameter("examId");
+        if (StringUtils.isBlank(id)) {
+            throw new GlobalException(MISSING_ARGUMENT);
+        }
+
+        Boolean b = examService.deleteById(id);
+
+        return b ? R.ok("删除成功") : R.fail("删除失败");
+
     }
 }
