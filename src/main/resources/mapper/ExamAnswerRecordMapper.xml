@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.xmut.examsys.mapper.ExamAnswerRecordMapper">
+
+    <resultMap id="BaseResultMap" type="edu.xmut.examsys.bean.ExamAnswerRecord">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="qid" column="qid" jdbcType="VARCHAR"/>
+            <result property="paperId" column="paper_id" jdbcType="BIGINT"/>
+            <result property="examId" column="exam_id" jdbcType="BIGINT"/>
+            <result property="userId" column="user_id" jdbcType="BIGINT"/>
+            <result property="replyAnswer" column="reply_answer" jdbcType="VARCHAR"/>
+            <result property="isRight" column="is_right" jdbcType="TINYINT"/>
+            <result property="optionId" column="option_id" jdbcType="VARCHAR"/>
+            <result property="questionType" column="question_type" jdbcType="TINYINT"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,qid,paper_id,
+        exam_id,user_id,reply_answer,
+        is_right,option_id,question_type,
+        create_time,update_time,is_deleted
+    </sql>
+    <insert id="insert">
+        insert into exam_answer_record(id, qid, paper_id, exam_id, user_id, reply_answer, is_right, option_id,
+                                       question_type)
+        values (#{id,jdbcType=BIGINT}, #{qid,jdbcType=VARCHAR}, #{paperId,jdbcType=BIGINT}, #{examId,jdbcType=BIGINT},
+                #{userId,jdbcType=BIGINT}, #{replyAnswer,jdbcType=VARCHAR}, #{isRight,jdbcType=TINYINT},
+                #{optionId}, #{questionType,jdbcType=TINYINT})
+    </insert>
+    <update id="update">
+        update exam_answer_record
+        <set>
+            <if test="replyAnswer !=null">
+                reply_answer = #{replyAnswer},
+            </if>
+            <if test="optionId !=null">
+                option_id = #{optionId}
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByExamIdAndPaperIdAndUserIdAndQId" resultType="edu.xmut.examsys.bean.ExamAnswerRecord">
+        select *
+        from exam_answer_record
+        where exam_id = #{examId,jdbcType=BIGINT}
+          and paper_id = #{paperId,jdbcType=BIGINT}
+          and user_id = #{userId,jdbcType=BIGINT}
+          and qid = #{qId}
+    </select>
+    <select id="selectByExamIdAndPaperIdAndUserId" resultType="edu.xmut.examsys.bean.ExamAnswerRecord">
+        select *
+        from exam_answer_record
+        where exam_id = #{examId,jdbcType=BIGINT}
+          and paper_id = #{paperId,jdbcType=BIGINT}
+          and user_id = #{userId,jdbcType=BIGINT}
+    </select>
+
+</mapper>
