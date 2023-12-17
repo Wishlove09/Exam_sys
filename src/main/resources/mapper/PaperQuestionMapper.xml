@@ -27,4 +27,9 @@
             (#{question.id},#{pid},#{question.type},#{question.score})
         </foreach>
     </insert>
+    <select id="selectQIdByPId" resultType="edu.xmut.examsys.bean.PaperQuestion">
+        select pid,qid,score,question_type
+        from paper_question
+        where pid = #{pid}
+    </select>
 </mapper>

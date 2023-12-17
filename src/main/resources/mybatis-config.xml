@@ -50,5 +50,6 @@
         <mapper resource="mapper/ExamInfoMapper.xml"/>
         <mapper resource="mapper/ExamParticipantsMapper.xml"/>
         <mapper resource="mapper/ExamRecordMapper.xml"/>
+        <mapper resource="mapper/ExamAnswerRecordMapper.xml"/>
     </mappers>
 </configuration>

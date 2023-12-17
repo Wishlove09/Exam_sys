@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 public class OptionVO {
 
     private String id;
-    private String title;
     private String content;
     private String image;
 }

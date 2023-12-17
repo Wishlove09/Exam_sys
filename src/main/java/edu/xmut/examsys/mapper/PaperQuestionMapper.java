@@ -1,5 +1,6 @@
 package edu.xmut.examsys.mapper;
 
+import edu.xmut.examsys.bean.PaperQuestion;
 import edu.xmut.examsys.bean.dto.PaperDetailsDTO;
 import edu.xmut.examsys.bean.dto.QuestionBatchDTO;
 import edu.xmut.examsys.bean.vo.QuestionDetailsVO;
@@ -22,6 +23,7 @@ public interface PaperQuestionMapper {
             @Param("questionList")
             List<PaperDetailsDTO.QuestionIdsDTO> questionList);
 
+    List<PaperQuestion> selectQIdByPId(@Param("pid") Long paperId);
 }
 
 

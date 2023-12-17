@@ -25,6 +25,8 @@ public class ExamRecord implements Serializable {
      */
     private Long userId;
 
+    private Long paperId;
+
     /**
      * 考试次数
      */

@@ -17,7 +17,11 @@
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
     </resultMap>
-        <select id="selectByExamIdAndUserId" resultType="edu.xmut.examsys.bean.ExamRecord">
+    <insert id="insert">
+        insert into exam_record (id, exam_id, user_id, try_count, passed, start_time, end_time, final_grade)
+        values (#{id}, #{examId}, #{userId}, #{tryCount}, #{passed}, #{startTime}, #{endTime}, #{finalGrade})
+    </insert>
+    <select id="selectByExamIdAndUserId" resultType="edu.xmut.examsys.bean.ExamRecord">
             select *
             from exam_record
             where user_id = #{userId}

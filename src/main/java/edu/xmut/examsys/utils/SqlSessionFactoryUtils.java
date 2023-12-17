@@ -25,9 +25,9 @@ public class SqlSessionFactoryUtils {
         return sqlSessionFactory.openSession(isCommit);
     }
 
-    private static SqlSessionFactory initSqlSessionFactory() {
+    public static SqlSessionFactory initSqlSessionFactory() {
         String xml = "mybatis-config.xml";
-        InputStream inputStream = null;
+        InputStream inputStream;
         try {
             inputStream = Resources.getResourceAsStream(xml);
         } catch (IOException e) {

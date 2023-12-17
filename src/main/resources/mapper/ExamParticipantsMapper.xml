@@ -5,10 +5,17 @@
 <mapper namespace="edu.xmut.examsys.mapper.ExamParticipantsMapper">
 
     <resultMap id="BaseResultMap" type="edu.xmut.examsys.bean.ExamParticipants">
-            <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="examId" column="exam_id" jdbcType="INTEGER"/>
-            <result property="classId" column="class_id" jdbcType="INTEGER"/>
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="examId" column="exam_id" jdbcType="INTEGER"/>
+        <result property="classId" column="class_id" jdbcType="INTEGER"/>
     </resultMap>
+    <insert id="insertBatch">
+        insert into exam_participants(exam_id, class_id)
+        VALUES
+        <foreach collection="classIds" separator="," open=" (" close=") " item="classId">
+            #{examId},#{classId}
+        </foreach>
+    </insert>
     <select id="selectByClassId" resultType="edu.xmut.examsys.bean.ExamParticipants">
         select *
         from exam_participants

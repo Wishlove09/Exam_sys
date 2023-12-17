@@ -3,6 +3,8 @@ package edu.xmut.examsys.mapper;
 import edu.xmut.examsys.bean.ExamRecord;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * @author shuofeng
  * @description 针对表【exam_record(考试记录表)】的数据库操作Mapper
@@ -16,6 +18,9 @@ public interface ExamRecordMapper {
             Long id,
             @Param("userId")
             Long userId);
+
+
+    Integer insert(ExamRecord examRecord);
 }
 
 

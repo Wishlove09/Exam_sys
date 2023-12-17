@@ -29,4 +29,17 @@
         from question_option
         where qid = #{id}
     </select>
+    <select id="selectById" resultType="edu.xmut.examsys.bean.QuestionOption">
+        select *
+        from question_option
+        where id = #{id}
+    </select>
+    <select id="selectByIds" resultType="edu.xmut.examsys.bean.QuestionOption">
+        select *
+        from question_option
+        where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
 </mapper>

@@ -104,7 +104,6 @@
         from exam_info
         where exam_id = #{id}
           and is_deleted = 0
-
     </select>
     <select id="selectAll" resultType="edu.xmut.examsys.bean.ExamInfo">
         select exam_id,status,start_time,end_time,title from exam_info

@@ -10,8 +10,8 @@ import java.util.List;
  * @author 朔风
  * @date 2023-12-07 02:02
  */
-@NoArgsConstructor
 @Data
+@NoArgsConstructor
 public class ExamAddDTO {
 
     private String title;
@@ -21,5 +21,6 @@ public class ExamAddDTO {
     private Integer totalTime;
     private Integer totalScore;
     private Boolean timeLimit;
+    private List<Long> crowds;
     private List<Date> examDate;
 }

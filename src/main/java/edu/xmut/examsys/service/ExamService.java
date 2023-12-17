@@ -1,12 +1,7 @@
 package edu.xmut.examsys.service;
 
-import edu.xmut.examsys.bean.ExamInfo;
-import edu.xmut.examsys.bean.dto.ExamAddDTO;
-import edu.xmut.examsys.bean.dto.ExamInfoDTO;
-import edu.xmut.examsys.bean.dto.PageDTO;
-import edu.xmut.examsys.bean.vo.ExamDetailsVO;
-import edu.xmut.examsys.bean.vo.ExamInfoVO;
-import edu.xmut.examsys.bean.vo.PageVO;
+import edu.xmut.examsys.bean.dto.*;
+import edu.xmut.examsys.bean.vo.*;
 import org.quartz.SchedulerException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +15,7 @@ public interface ExamService {
 
     Boolean addExam(ExamAddDTO examAddDTO, HttpServletRequest request);
 
-    PageVO listByUser(PageDTO pageDTO, String userId);
+    PageVO listByUser(PageDTO pageDTO, Long userId);
 
     ExamDetailsVO getDetailsById(String examId);
 
@@ -29,4 +24,18 @@ public interface ExamService {
     Boolean update(ExamInfoDTO examInfoDTO) throws SchedulerException;
 
     Boolean deleteById(String id);
+
+    Boolean checkExamPermission(Long id, Long userId);
+
+    StartExamVO startExam(Long examId, Long userId);
+
+    Integer checkExamIsStartOrEnd(long examId);
+
+    ExamQuestionDetailVO getQuestionDetailByQid(String qid);
+
+    Boolean saveAnswer(ExamSaveDTO examSaveDTO, HttpServletRequest request);
+
+    ExamAnsweredVO getAnswered(ExamAnsweredQueryDTO examAnsweredQueryDTO, HttpServletRequest request);
+
+    boolean submitExam(ExamSubmitDTO examSubmitDTO, HttpServletRequest request);
 }
