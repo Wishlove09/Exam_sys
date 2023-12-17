@@ -51,5 +51,7 @@
         <mapper resource="mapper/ExamParticipantsMapper.xml"/>
         <mapper resource="mapper/ExamRecordMapper.xml"/>
         <mapper resource="mapper/ExamAnswerRecordMapper.xml"/>
+        <mapper resource="mapper/ScoreMapper.xml"/>
+        <mapper resource="mapper/UserWrongBookMapper.xml"/>
     </mappers>
 </configuration>
