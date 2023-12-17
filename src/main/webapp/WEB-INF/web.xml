@@ -34,9 +34,6 @@
     </filter-mapping>
 
 
-    <listener>
-<!--        <listener-class>edu.xmut.examsys.listener.QuartzContextListener</listener-class>-->
-    </listener>
 
 
 </web-app>
