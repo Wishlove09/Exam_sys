@@ -84,13 +84,13 @@ public class PaperServiceImpl implements PaperService {
         paperInfo.setDesc(paperDetailsDTO.getDesc());
         paperInfo.setTotalScore(paperDetailsDTO.getTotal());
         paperInfo.setRadioCount(singleCount);
-        paperInfo.setRadioScore(2);
+        paperInfo.setRadioScore(paperInfo.getRadioScore());
         paperInfo.setMultiCount(multiCount);
-        paperInfo.setMultiScore(2);
+        paperInfo.setMultiScore(paperInfo.getMultiScore());
         paperInfo.setJudgeCount(judgeCount);
-        paperInfo.setJudgeScore(2);
+        paperInfo.setJudgeScore(paperInfo.getJudgeScore());
         paperInfo.setFillCount(fillCount);
-        paperInfo.setFillScore(2);
+        paperInfo.setFillScore(paperInfo.getFillScore());
         String token = request.getHeader(SystemConstant.AUTHORIZATION);
         paperInfo.setCreator(Long.valueOf(jwtTokenUtil.getUserId(token)));
 

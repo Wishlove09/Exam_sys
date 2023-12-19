@@ -7,6 +7,7 @@
 
     <resultMap id="BaseResultMap" type="edu.xmut.examsys.bean.Question">
         <id property="id" column="id" jdbcType="VARCHAR"/>
+        <id property="subjectId" column="subject_id" jdbcType="BIGINT"/>
         <result property="type" column="type" jdbcType="TINYINT"/>
         <result property="level" column="level" jdbcType="INTEGER"/>
         <result property="image" column="image" jdbcType="VARCHAR"/>
@@ -19,12 +20,8 @@
         <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        id,type,level,
-        image,option_id,content,
-        creator,analysis,create_time,
-        update_time,is_deleted
-    </sql>
+
+
     <insert id="insert">
         insert into question(id, type, level, image, option_id, content, creator, analysis)
         values (#{id}, #{type}, #{level}, #{image}, #{optionId}, #{content}, #{creator}, #{analysis})
@@ -36,11 +33,14 @@
         select *
         from question
         <where>
-            <if test="search !=null ">
-                and (content like concat('%', #{search}, '%'))
+            <if test="searchContent !=null and searchContent !='' ">
+                and (content like concat('%', #{searchContent}, '%'))
             </if>
-            <if test="type !=null">
-                and type = #{type}
+            <if test="searchType !=null">
+                and type = #{searchType}
+            </if>
+            <if test="searchSubject !=null">
+                and subject_id = #{searchSubject}
             </if>
         </where>
         order by update_time

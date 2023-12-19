@@ -15,12 +15,6 @@ import java.util.List;
 public interface QuestionMapper {
 
 
-    Page<Question> pages(
-            @Param("search")
-            String search,
-            @Param("type")
-            Integer type);
-
     Integer insert(Question question);
 
     Question selectById(String id);
@@ -28,6 +22,14 @@ public interface QuestionMapper {
     List<Question> selectByIdsBatch(
             @Param("ids")
             List<String> ids);
+
+    Page<Question> pages(
+            @Param("searchContent")
+            String searchContent,
+            @Param("searchType")
+            Integer searchType,
+            @Param("searchSubject")
+            Integer searchSubject);
 }
 
 

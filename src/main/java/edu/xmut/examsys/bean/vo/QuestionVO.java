@@ -11,6 +11,7 @@ import lombok.Data;
 @Builder
 public class QuestionVO {
     private String id;
+    private String subject;
     private String content;
     private Integer type;
     private String realName;

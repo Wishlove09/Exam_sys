@@ -41,7 +41,7 @@ public class QuestionController {
         if (StringUtils.isBlank(json)) {
             throw new GlobalException(MISSING_ARGUMENT);
         }
-        PageDTO pageDTO = JSONObject.parseObject(json, PageDTO.class);
+        PageQuestionQueryDTO pageDTO = JSONObject.parseObject(json, PageQuestionQueryDTO.class);
         PageVO pageVO = questionService.pages(pageDTO);
         return R.ok(pageVO);
 

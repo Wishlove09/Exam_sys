@@ -13,7 +13,7 @@ import java.util.List;
  * @date 2023-11-29 08:29
  */
 public interface QuestionService {
-    PageVO pages(PageDTO pageDTO);
+    PageVO pages(PageQuestionQueryDTO pageDTO);
 
     Boolean addSingleQuestion(SingleQuestionDTO singleQuestionDTO, HttpServletRequest request);
 

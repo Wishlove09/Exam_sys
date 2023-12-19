@@ -19,13 +19,19 @@ public class PaperDetailsDTO {
 
 
     private Integer total;
-    private List<QuestionIdsDTO> questionIds;
     private String title;
     private String desc;
+
+    private List<QuestionIdsDTO> questionIds;
     private Integer singleCount;
     private Integer multiCount;
     private Integer judgeCount;
     private Integer fillCount;
+
+    private Integer singleScore;
+    private Integer multiScore;
+    private Integer judgeScore;
+    private Integer fillScore;
 
     @NoArgsConstructor
     @Data

@@ -5,12 +5,14 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import edu.xmut.examsys.bean.Question;
 import edu.xmut.examsys.bean.QuestionOption;
+import edu.xmut.examsys.bean.Subject;
 import edu.xmut.examsys.bean.User;
 import edu.xmut.examsys.bean.dto.*;
 import edu.xmut.examsys.bean.vo.*;
 import edu.xmut.examsys.constants.SystemConstant;
 import edu.xmut.examsys.mapper.QuestionMapper;
 import edu.xmut.examsys.mapper.QuestionOptionMapper;
+import edu.xmut.examsys.mapper.SubjectMapper;
 import edu.xmut.examsys.mapper.UserMapper;
 import edu.xmut.examsys.service.QuestionService;
 import edu.xmut.examsys.utils.JwtTokenUtil;
@@ -18,6 +20,7 @@ import edu.xmut.examsys.utils.SnowflakeUtils;
 import edu.xmut.examsys.utils.SqlSessionFactoryUtils;
 import fun.shuofeng.myspringmvc.annotaion.Service;
 import org.apache.ibatis.session.SqlSession;
+import org.mybatis.spring.SqlSessionTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -35,26 +38,33 @@ public class QuestionServiceImpl implements QuestionService {
     private final JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
 
     private final SqlSession sqlSession;
+    private final SubjectMapper subjectMapper;
     private QuestionMapper questionMapper;
     private QuestionOptionMapper questionOptionMapper;
     private UserMapper userMapper;
 
     public QuestionServiceImpl() {
+        SqlSessionTemplate sessionTemplate = new SqlSessionTemplate(SqlSessionFactoryUtils.initSqlSessionFactory());
         sqlSession = SqlSessionFactoryUtils.openSession(false);
         questionMapper = sqlSession.getMapper(QuestionMapper.class);
         questionOptionMapper = sqlSession.getMapper(QuestionOptionMapper.class);
         userMapper = sqlSession.getMapper(UserMapper.class);
+        subjectMapper = sqlSession.getMapper(SubjectMapper.class);
     }
 
     @Override
-    public PageVO pages(PageDTO pageDTO) {
+    public PageVO pages(PageQuestionQueryDTO pageDTO) {
         PageHelper.startPage(pageDTO.getPageNum(), pageDTO.getPageSize());
-        Page<Question> questionPage = questionMapper.pages(pageDTO.getSearch(), pageDTO.getType());
+        Page<Question> questionPage = questionMapper.pages(pageDTO.getSearchContent(),
+                pageDTO.getSearchType(),
+                pageDTO.getSearchSubject());
         // mysql区分大小写吗？ 在windows 不区分 在linux区分
         List<QuestionVO> collect = questionPage.getResult().stream().map(question -> {
             User user = userMapper.selectById(question.getCreator());
+            Subject subject = subjectMapper.selectById(question.getSubjectId());
             return QuestionVO.builder()
                     .id(question.getId())
+                    .subject(subject.getTitle())
                     .type(question.getType())
                     .content(question.getContent())
                     .updateTime(DateUtil.format(question.getUpdateTime(), "yyyy-MM-dd"))
@@ -270,7 +280,6 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public QuestionListVO getByIdsBatch(List<String> ids) {
-
 
 
         ArrayList<QuestionVO> singleList = new ArrayList<>();
