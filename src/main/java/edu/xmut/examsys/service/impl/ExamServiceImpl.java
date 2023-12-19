@@ -541,7 +541,11 @@ public class ExamServiceImpl implements ExamService {
         List<ExamQuestionVO> judgeList = new ArrayList<>();
 
         int sort = 0;
-        for (PaperQuestion paperQuestion : questionList) {
+
+        List<PaperQuestion> collect = questionList.stream()
+                .sorted(Comparator.comparing(PaperQuestion::getQuestionType)).collect(Collectors.toList());
+
+        for (PaperQuestion paperQuestion : collect) {
             Integer type = paperQuestion.getQuestionType();
             ExamQuestionVO examQuestionVO = new ExamQuestionVO();
             examQuestionVO.setId(paperQuestion.getQid());
