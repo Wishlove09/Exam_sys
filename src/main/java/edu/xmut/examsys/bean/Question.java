@@ -2,10 +2,12 @@ package edu.xmut.examsys.bean;
 
 import java.io.Serializable;
 import java.util.Date;
+
 import lombok.Data;
 
 /**
  * 试题主表
+ *
  * @TableName question
  */
 @Data
@@ -14,6 +16,11 @@ public class Question implements Serializable {
      * 试题id
      */
     private String id;
+
+    /**
+     * 学科id
+     */
+    private Long subjectId;
 
     /**
      * 试题类型（0-单选题，1-多选题，2-判断题，3-填空题）
