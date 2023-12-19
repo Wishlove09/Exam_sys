@@ -15,9 +15,30 @@
             <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        id,exam_id,user_id,
-        resultScore,submit_data,create_time,
-        update_time,is_deleted
-    </sql>
+
+    <select id="selectByUserIdAndTitle" resultType="edu.xmut.examsys.bean.vo.StudentScoreVO">
+        SELECT e.title as title,
+               e.exam_id as examId,
+               s.user_id as userId,
+               s.resultScore
+        FROM score s
+                 LEFT JOIN exam_info e ON s.exam_id = e.exam_id
+        WHERE s.user_id = #{userId}
+         <if test="title !=null and title !=''">
+             AND e.title LIKE CONCAT('%', #{title}, '%')
+         </if>
+    </select>
+    <select id="statisticalScoreInterval" resultType="edu.xmut.examsys.bean.Score">
+        select max(resultScore) as resultScore
+        from score
+        where exam_id = #{examId}
+        group by user_id
+
+    </select>
+    <select id="selectByUserId" resultType="edu.xmut.examsys.bean.Score">
+        select *
+        from score
+        where user_id = #{userId}
+        order by submit_data desc
+    </select>
 </mapper>

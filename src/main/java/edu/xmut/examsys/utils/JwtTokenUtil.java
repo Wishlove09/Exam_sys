@@ -60,7 +60,7 @@ public class JwtTokenUtil {
      * 生成token的过期时间 6小时
      */
     private Date generateExpirationDate() {
-        long expiration = 6 * 60 * 60 * 1000L;
+        long expiration = 24 * 60 * 60 * 1000L;
         // long expiration = 10 * 1000L;
         return new Date(System.currentTimeMillis() + expiration);
     }

@@ -26,7 +26,8 @@ public interface ExamInfoMapper {
 
     ExamInfo selectById(Long id);
 
-    List<ExamInfo> selectAll();
+    Page<ExamInfo> selectAll();
+    Page<ExamInfo> selectAllWithTheEnd();
 
     Integer updateStatus(ExamInfo examInfo);
 
