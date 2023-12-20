@@ -36,6 +36,8 @@ public class PageInfoVO {
      */
     private Long creator;
 
+    private Integer totalScore;
+
     /**
      * 试卷状态（0-未启用，1-启用）
      */

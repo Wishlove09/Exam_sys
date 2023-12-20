@@ -18,9 +18,9 @@ import java.util.List;
 public class PaperDetailsDTO {
 
 
-    private Integer total;
     private String title;
     private String desc;
+    private Integer totalScore;
 
     private List<QuestionIdsDTO> questionIds;
     private Integer singleCount;

@@ -63,7 +63,6 @@ public class ExamServiceImpl implements ExamService {
         paperInfoMapper = sqlSessionTemplate.getMapper(PaperInfoMapper.class);
         examRecordMapper = sqlSessionTemplate.getMapper(ExamRecordMapper.class);
         paperQuestionMapper = sqlSessionTemplate.getMapper(PaperQuestionMapper.class);
-
         questionMapper = sqlSessionTemplate.getMapper(QuestionMapper.class);
         questionOptionMapper = sqlSessionTemplate.getMapper(QuestionOptionMapper.class);
         examAnswerRecordMapper = sqlSessionTemplate.getMapper(ExamAnswerRecordMapper.class);
@@ -222,7 +221,6 @@ public class ExamServiceImpl implements ExamService {
         examInfo.setStartTime(DateUtil.parse(examDate.get(0)));
         examInfo.setEndTime(DateUtil.parse(examDate.get(1)));
 
-        Date now = DateUtil.date();
         Date startTime = examInfo.getStartTime();
         Date endTime = examInfo.getEndTime();
 
@@ -256,7 +254,7 @@ public class ExamServiceImpl implements ExamService {
 
         examInfo.setStatus(rangeDate);
         Integer result = examInfoMapper.update(examInfo);
-        // sqlSessionTemplate.commit();
+        sqlSessionTemplate.clearCache();
 
         return result > 0;
     }
@@ -390,7 +388,7 @@ public class ExamServiceImpl implements ExamService {
         examRecord.setStartTime(examSubmitDTO.getStartTime());
         examRecord.setEndTime(DateUtil.date());
 
-        int sum = getSum(examSubmitDTO, userId);
+        int sum = calculateScore(examSubmitDTO, userId);
 
         // 得到最终成绩
         examRecord.setFinalGrade(sum);
@@ -400,7 +398,7 @@ public class ExamServiceImpl implements ExamService {
         return result > 0;
     }
 
-    private int getSum(ExamSubmitDTO examSubmitDTO, Long userId) {
+    private int calculateScore(ExamSubmitDTO examSubmitDTO, Long userId) {
         // 得到所有试卷试题包括答案
         List<PaperQuestion> paperQuestions = paperQuestionMapper.selectQIdByPId(examSubmitDTO.getPaperId());
         // 定义总分
@@ -456,7 +454,7 @@ public class ExamServiceImpl implements ExamService {
                     // 根据多个选项id查询多个选项实体（学生作答的选项）
                     List<QuestionOption> answered = questionOptionMapper.selectByIds(ids);
                     // 根据试题id查询正确的多个选项（正确的选项）
-                    List<QuestionOption> rightAnswered = questionOptionMapper.selectByQid(qid);
+                    List<QuestionOption> rightAnswered = questionOptionMapper.selectByQidWithRight(qid);
                     // 如果选项为空，代表没有作答
                     if (answered.isEmpty()) {
                         continue;

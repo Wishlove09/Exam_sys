@@ -9,11 +9,12 @@
         <result property="examId" column="exam_id" jdbcType="INTEGER"/>
         <result property="classId" column="class_id" jdbcType="INTEGER"/>
     </resultMap>
+
     <insert id="insertBatch">
         insert into exam_participants(exam_id, class_id)
         VALUES
-        <foreach collection="classIds" separator="," open=" (" close=") " item="classId">
-            #{examId},#{classId}
+        <foreach collection="classIds" item="classId" separator=",">
+            (#{examId},#{classId})
         </foreach>
     </insert>
     <select id="selectByClassId" resultType="edu.xmut.examsys.bean.ExamParticipants">

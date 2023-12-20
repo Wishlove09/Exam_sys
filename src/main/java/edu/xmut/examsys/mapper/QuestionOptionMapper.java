@@ -17,6 +17,7 @@ public interface QuestionOptionMapper {
 
 
     List<QuestionOption> selectByQid(String qid);
+    List<QuestionOption> selectByQidWithRight(String qid);
 
     QuestionOption selectById(String id);
 

@@ -1,5 +1,6 @@
 package edu.xmut.examsys.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.UUID;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -80,22 +81,35 @@ public class PaperServiceImpl implements PaperService {
 
         PaperInfo paperInfo = new PaperInfo();
         paperInfo.setId(System.currentTimeMillis());
+        BeanUtil.copyProperties(paperDetailsDTO, paperInfo);
         paperInfo.setTitle(paperDetailsDTO.getTitle());
         paperInfo.setDesc(paperDetailsDTO.getDesc());
-        paperInfo.setTotalScore(paperDetailsDTO.getTotal());
+        paperInfo.setTotalScore(paperDetailsDTO.getTotalScore());
         paperInfo.setRadioCount(singleCount);
-        paperInfo.setRadioScore(paperInfo.getRadioScore());
+        paperInfo.setRadioScore(paperDetailsDTO.getSingleScore());
         paperInfo.setMultiCount(multiCount);
-        paperInfo.setMultiScore(paperInfo.getMultiScore());
+        paperInfo.setMultiScore(paperDetailsDTO.getMultiScore());
         paperInfo.setJudgeCount(judgeCount);
-        paperInfo.setJudgeScore(paperInfo.getJudgeScore());
+        paperInfo.setJudgeScore(paperDetailsDTO.getJudgeScore());
         paperInfo.setFillCount(fillCount);
-        paperInfo.setFillScore(paperInfo.getFillScore());
+        paperInfo.setFillScore(paperDetailsDTO.getFillScore());
         String token = request.getHeader(SystemConstant.AUTHORIZATION);
         paperInfo.setCreator(Long.valueOf(jwtTokenUtil.getUserId(token)));
+        List<PaperDetailsDTO.QuestionIdsDTO> collect = paperDetailsDTO.getQuestionIds().stream()
+                .peek(questionIdsDTO -> {
+                    if (questionIdsDTO.getType() == 0) {
+                        questionIdsDTO.setScore(paperDetailsDTO.getSingleScore());
+                    } else if (questionIdsDTO.getType() == 1) {
+                        questionIdsDTO.setScore(paperDetailsDTO.getMultiScore());
+                    } else if (questionIdsDTO.getType() == 2) {
+                        questionIdsDTO.setScore(paperDetailsDTO.getJudgeScore());
+                    } else if (questionIdsDTO.getType() == 3) {
+                        questionIdsDTO.setScore(paperDetailsDTO.getFillScore());
+                    }
+                }).collect(Collectors.toList());
 
         Integer r1 = paperInfoMapper.insert(paperInfo);
-        Integer r2 = paperQuestionMapper.insert(paperInfo.getId(), paperDetailsDTO.getQuestionIds());
+        Integer r2 = paperQuestionMapper.insert(paperInfo.getId(), collect);
 
         sqlSession.commit();
         return r1 > 0 && r2 > 0;
@@ -104,8 +118,7 @@ public class PaperServiceImpl implements PaperService {
     @Override
     public Boolean updateWithStatus(PageInfoDTO pageInfoDTO) {
         Integer result = paperInfoMapper.update(pageInfoDTO);
-
-
+        sqlSession.commit();
         return result > 0;
     }
 
@@ -115,10 +128,12 @@ public class PaperServiceImpl implements PaperService {
         Page<PaperInfo> pages = paperInfoMapper.pages(search);
         List<PaperInfo> list = pages.getResult();
         return list.stream()
+                .filter(paperInfo -> paperInfo.getStatus() == 1)
                 .map(paperInfo -> PageInfoVO.builder()
                         .id(paperInfo.getId())
                         .title(paperInfo.getTitle())
                         .desc(paperInfo.getDesc())
+                        .totalScore(paperInfo.getTotalScore())
                         .build()).collect(Collectors.toList());
     }
 }

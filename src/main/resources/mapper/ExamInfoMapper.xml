@@ -82,7 +82,7 @@
         from exam_info
         where creator = #{creator}
           and is_deleted = 0
-        order by `status`
+        order by `status`, create_time desc
     </select>
     <select id="selectByIds" resultType="edu.xmut.examsys.bean.ExamInfo">
         select * from exam_info

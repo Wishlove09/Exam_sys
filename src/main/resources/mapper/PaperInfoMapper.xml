@@ -42,10 +42,10 @@
         update paper_info
         <set>
             <if test="title !=null">
-                title = #{title}
+                title = #{title},
             </if>
             <if test="desc !=null">
-                `desc` = #{desc}
+                `desc` = #{desc},
             </if>
             <if test="status !=null">
                 `status` = #{status}
@@ -53,7 +53,7 @@
         </set>
         <where>
             <if test="id!=null">
-                and id =#{id }
+                and id = #{id}
             </if>
         </where>
     </update>
