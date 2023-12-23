@@ -13,6 +13,8 @@ import java.util.List;
  * @date 2023-11-27 22:03
  */
 public interface ClazzService {
+
+
     List<Clazz> getAll();
 
     Boolean add(ClazzDTO clazzDTO);

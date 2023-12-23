@@ -14,6 +14,11 @@
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
     </resultMap>
+    <insert id="insert">
+        insert into score(exam_id, user_id, resultScore, submit_data)
+        values (#{examId}, #{userId}, #{resultScore}, #{submitData});
+
+    </insert>
 
 
     <select id="selectByUserIdAndTitle" resultType="edu.xmut.examsys.bean.vo.StudentScoreVO">

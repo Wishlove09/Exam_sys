@@ -6,5 +6,6 @@ package edu.xmut.examsys.constants;
  */
 public interface GroupName {
     String CHANGE_EXAM_STATUS = "changeExamStatus";
+    String SYNC_GRADE_RESULT = "SynchronizeGradeResultsJob";
 
 }

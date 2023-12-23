@@ -13,6 +13,7 @@ import edu.xmut.examsys.bean.vo.*;
 import edu.xmut.examsys.constants.GroupName;
 import edu.xmut.examsys.exception.GlobalException;
 import edu.xmut.examsys.job.ChangeExamStatusJob;
+import edu.xmut.examsys.job.SynchronizeGradeResultsJob;
 import edu.xmut.examsys.mapper.*;
 import edu.xmut.examsys.service.ExamService;
 import edu.xmut.examsys.service.JobService;
@@ -49,6 +50,7 @@ public class ExamServiceImpl implements ExamService {
     private final QuestionMapper questionMapper;
     private final QuestionOptionMapper questionOptionMapper;
     private final ExamAnswerRecordMapper examAnswerRecordMapper;
+    private final ScoreMapper scoreMapper;
 
     private final Logger logger = LoggerFactory.getLogger(ExamServiceImpl.class);
 
@@ -66,6 +68,7 @@ public class ExamServiceImpl implements ExamService {
         questionMapper = sqlSessionTemplate.getMapper(QuestionMapper.class);
         questionOptionMapper = sqlSessionTemplate.getMapper(QuestionOptionMapper.class);
         examAnswerRecordMapper = sqlSessionTemplate.getMapper(ExamAnswerRecordMapper.class);
+        scoreMapper = sqlSessionTemplate.getMapper(ScoreMapper.class);
         jobService = new JobServiceImpl();
     }
 
@@ -392,6 +395,20 @@ public class ExamServiceImpl implements ExamService {
 
         // 得到最终成绩
         examRecord.setFinalGrade(sum);
+        // 添加定时任务，同步最终成绩到成绩表中
+        try {
+            JobDataMap dataMap = new JobDataMap();
+            dataMap.put("totalScore", sum);
+            dataMap.put("examId", examSubmitDTO.getExamId());
+            dataMap.put("userId", userId);
+            dataMap.put("submitDate", DateUtil.date());
+            dataMap.put(ScoreMapper.class.getSimpleName(), scoreMapper);
+            jobService.addJob(SynchronizeGradeResultsJob.class,
+                    String.valueOf(examRecord.getId()), GroupName.SYNC_GRADE_RESULT,
+                    dataMap, DateUtil.offsetMinute(new Date(), 15), null);
+        } catch (SchedulerException e) {
+            logger.error(e.getMessage(), e);
+        }
 
         Integer result = examRecordMapper.insert(examRecord);
 

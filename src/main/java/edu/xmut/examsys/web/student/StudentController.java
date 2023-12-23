@@ -46,8 +46,8 @@ public class StudentController {
     @RequestMapping(value = "/get")
     public R getById(HttpServletRequest request) {
         Long id = Long.valueOf(request.getParameter("id"));
-
         StudentVO studentVO = studentService.getById(id);
+
 
         return R.ok(studentVO);
     }

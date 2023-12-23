@@ -15,16 +15,18 @@ import java.util.List;
  */
 public interface ClazzMapper {
 
+
+
     List<ClazzStudent> selectCStById(Long userId);
 
     Clazz selectClazzById(Long clazzId);
 
     List<Clazz> selectAll();
 
-    Integer insertCS(@Param("clazzId") Long clazzId,
+    Integer insertCS(@Param("clazzIds") List<Long> clazzId,
                      @Param("userId") Long id);
 
-    Integer updateCS(@Param("clazzId") Long clazzId,
+    Integer updateCS(@Param("clazzIds") List<Long> clazzId,
                      @Param("userId") Long id);
 
     Integer insertClazz(Clazz clazz);
@@ -36,6 +38,8 @@ public interface ClazzMapper {
     Integer deleteById(Long id);
 
     List<Clazz> selectBySearch(String q);
+
+    Integer deleteByUserId(Long userId);
 }
 
 

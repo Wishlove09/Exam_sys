@@ -13,13 +13,13 @@
         <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        id,class_name,dept_id,
-        create_time,update_time,is_deleted
-    </sql>
+
     <insert id="insertCS">
         insert into clazz_student(user_id, clazz_id)
-        values (#{userId}, #{clazzId})
+        values
+        <foreach collection="clazzIds" item="clazzId" separator=",">
+            (#{userId}, #{clazzId})
+        </foreach>
     </insert>
     <insert id="insertClazz">
         insert into clazz(id, class_name, dept_id)
@@ -34,6 +34,11 @@
         delete
         from clazz
         where id = #{id}
+    </delete>
+    <delete id="deleteByUserId">
+        delete
+        from clazz_student
+        where user_id = #{userId}
     </delete>
     <select id="selectCStById" resultType="edu.xmut.examsys.bean.ClazzStudent">
         select *

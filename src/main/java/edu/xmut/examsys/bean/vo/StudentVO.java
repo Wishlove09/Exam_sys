@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author 朔风
@@ -43,7 +44,7 @@ public class StudentVO {
     /**
      * 班级id
      */
-    private Long clazzId;
+    private List<Long> clazzIds;
 
     /**
      * 生日

@@ -3,6 +3,8 @@ package edu.xmut.examsys.bean.dto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * @author 朔风
  * @date 2023-11-13 23:59
@@ -37,7 +39,7 @@ public class StudentDTO {
     /**
      * 班级id
      */
-    private Long clazzId;
+    private List<Long> clazzIds;
 
     /**
      * 生日

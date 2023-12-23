@@ -25,6 +25,8 @@ public interface ScoreMapper {
     List<Score> statisticalScoreInterval(String examId);
 
     Page<Score> selectByUserId(long userId);
+
+    int insert(Score score);
 }
 
 

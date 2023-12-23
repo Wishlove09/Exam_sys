@@ -82,11 +82,10 @@ public class StudentServiceImpl implements StudentService {
         studentVO.setSex(user.getSex());
         studentVO.setRealName(user.getRealName());
         studentVO.setEmail(user.getEmail());
-        // todo
-        // ClazzStudent clazzStudent = clazzMapper.selectCStById(user.getId());
-        // if (Objects.nonNull(clazzStudent)) {
-        //     studentVO.setClazzId(clazzStudent.getClazzId());
-        // }
+        List<ClazzStudent> clazzStudents = clazzMapper.selectCStById(user.getId());
+        if (Objects.nonNull(clazzStudents)) {
+            studentVO.setClazzIds(clazzStudents.stream().map(ClazzStudent::getClazzId).collect(Collectors.toList()));
+        }
         studentVO.setBirth(DateUtil.format(user.getBirth(), "yyyy-MM-dd"));
         studentVO.setPhone(user.getPhone());
 
@@ -103,15 +102,15 @@ public class StudentServiceImpl implements StudentService {
         // 更新用户
         Integer r1 = userMapper.update(user);
         // 更新班级
-        Long clazzId = studentDTO.getClazzId();
+        List<Long> clazzIds = studentDTO.getClazzIds();
         Integer r2;
-        if (Objects.isNull(clazzMapper.selectCStById(studentDTO.getId()))) {
-            r2 = clazzMapper.insertCS(clazzId, studentDTO.getId());
-        } else {
-            r2 = clazzMapper.updateCS(clazzId, studentDTO.getId());
+        Integer r3 = 0;
+        if (!Objects.isNull(clazzMapper.selectCStById(studentDTO.getId()))) {
+            r3 = clazzMapper.deleteByUserId(studentDTO.getId());
         }
+        r2 = clazzMapper.insertCS(clazzIds, studentDTO.getId());
 
-        return r1 > 0 && r2 > 0;
+        return r1 > 0 && r2 > 0 && r3 > 0;
     }
 
     @Override
