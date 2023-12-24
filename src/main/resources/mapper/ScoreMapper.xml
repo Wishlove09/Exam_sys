@@ -46,4 +46,10 @@
         where user_id = #{userId}
         order by submit_data desc
     </select>
+    <select id="selectByUserIdAndExamId" resultType="edu.xmut.examsys.bean.Score">
+        select *
+        from score
+        where user_id = #{userId}
+          and exam_id = #{examId}
+    </select>
 </mapper>

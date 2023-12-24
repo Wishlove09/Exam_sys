@@ -1,6 +1,8 @@
 package edu.xmut.examsys.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import edu.xmut.examsys.bean.dto.*;
 import edu.xmut.examsys.bean.vo.ExamQuestionVO;
 
@@ -272,7 +274,6 @@ public class ExamServiceImpl implements ExamService {
 
         Integer i = examInfoMapper.deleteById(id);
 
-        // sqlSessionTemplate.commit();
 
         return i > 0;
     }
@@ -362,20 +363,21 @@ public class ExamServiceImpl implements ExamService {
         determineType(examSaveDTO, examAnswerRecord);
         Integer result = examAnswerRecordMapper.insert(examAnswerRecord);
 
-
         return result > 0;
     }
 
     @Override
     public ExamAnsweredVO getAnswered(ExamAnsweredQueryDTO examAnsweredQueryDTO, HttpServletRequest request) {
-        ExamAnsweredVO examAnsweredVO = new ExamAnsweredVO();
 
         ExamAnswerRecord examAnswerRecord = examAnswerRecordMapper.selectByExamIdAndPaperIdAndUserIdAndQId(examAnsweredQueryDTO.getExamId(), examAnsweredQueryDTO.getPaperId(),
                 examAnsweredQueryDTO.getQId(), UserUtils.getUserId(request));
-        BeanUtil.copyProperties(examAnswerRecord, examAnsweredVO);
+        // 如果不存在答题记录直接返回null
         if (Objects.isNull(examAnswerRecord)) {
             return null;
         }
+
+        ExamAnsweredVO examAnsweredVO = new ExamAnsweredVO();
+        BeanUtil.copyProperties(examAnswerRecord, examAnsweredVO);
         if (examAnswerRecord.getQuestionType().equals(1)) {
             List<String> ids = JSONArray.parseArray(examAnswerRecord.getOptionId(), String.class);
             examAnsweredVO.setOptionId(null);
@@ -418,7 +420,7 @@ public class ExamServiceImpl implements ExamService {
             dataMap.put(ScoreMapper.class.getSimpleName(), scoreMapper);
             jobService.addJob(SynchronizeGradeResultsJob.class,
                     String.valueOf(examRecord.getId()), GroupName.SYNC_GRADE_RESULT,
-                    dataMap, DateUtil.offsetMinute(new Date(), 15), null);
+                    dataMap, DateUtil.offsetSecond(new Date(), 30), null);
         } catch (SchedulerException e) {
             logger.error(e.getMessage(), e);
         }
@@ -428,6 +430,13 @@ public class ExamServiceImpl implements ExamService {
         return result > 0;
     }
 
+    /**
+     * 计算分数
+     *
+     * @param examSubmitDTO
+     * @param userId
+     * @return
+     */
     private int calculateScore(ExamSubmitDTO examSubmitDTO, Long userId) {
         // 得到所有试卷试题包括答案
         List<PaperQuestion> paperQuestions = paperQuestionMapper.selectQIdByPId(examSubmitDTO.getPaperId());
@@ -504,17 +513,28 @@ public class ExamServiceImpl implements ExamService {
                     if (Objects.isNull(examAnswerRecord)) {
                         continue;
                     }
+                    // 得到学生作答结果
                     String replyAnswer = examAnswerRecord.getReplyAnswer();
                     if (Objects.isNull(replyAnswer)) {
                         continue;
                     }
-                    List<String> strings = JSONArray.parseArray(replyAnswer, String.class);
+                    // 解析为List集合
+                    List<String> strings = JSONArray.parseArray(replyAnswer, String.class)
+                            .stream()
+                            .filter(Objects::nonNull).collect(Collectors.toList());
                     if (strings.isEmpty()) {
                         continue;
                     }
-                    Question question = questionMapper.selectById(qid);
+                    // 得到正确答案
                     List<QuestionOption> questionOptions = questionOptionMapper.selectByQid(qid);
-                    // String answer = question.getAnswer();
+                    for (QuestionOption option : questionOptions) {
+                        String content = option.getContent();
+                        List<String> stringList = JSONArray.parseArray(content, String.class);
+                        // 如果答案相同，则加上分数
+                        if (CollectionUtil.isEqualList(stringList, strings)) {
+                            sum += score;
+                        }
+                    }
                     break;
             }
 
@@ -543,6 +563,7 @@ public class ExamServiceImpl implements ExamService {
         startExamVO.setExamId(examId);
 
         ExamInfo examInfo = examInfoMapper.selectById(examId);
+        // 设置考试持续时间（以秒为单位）
         startExamVO.setTotalTime(examInfo.getTotalTime() * 60);
         startExamVO.setTitle(examInfo.getTitle());
         // 得到试卷id
@@ -568,11 +589,11 @@ public class ExamServiceImpl implements ExamService {
         List<ExamQuestionVO> fillList = new ArrayList<>();
         List<ExamQuestionVO> judgeList = new ArrayList<>();
 
-        int sort = 0;
-
+        // 根据考试类型排序（升序：从单选到填空）
         List<PaperQuestion> collect = questionList.stream()
                 .sorted(Comparator.comparing(PaperQuestion::getQuestionType)).collect(Collectors.toList());
-
+        // 设置题号
+        int sort = 0;
         for (PaperQuestion paperQuestion : collect) {
             Integer type = paperQuestion.getQuestionType();
             ExamQuestionVO examQuestionVO = new ExamQuestionVO();

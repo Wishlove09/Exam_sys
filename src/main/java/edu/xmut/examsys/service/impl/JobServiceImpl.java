@@ -57,9 +57,9 @@ public class JobServiceImpl implements JobService {
                     .build();
 
             SimpleScheduleBuilder simpleScheduleBuilder = SimpleScheduleBuilder.simpleSchedule()
-                    .withIntervalInSeconds(1)   // 每3秒执行一次
+                    .withIntervalInSeconds(3)   // 每3秒执行一次
                     // .repeatForever();
-            .withRepeatCount(3);    // 总共执行3次
+                    .withRepeatCount(1);    // 总共执行2次
 
             // trigger
             TriggerBuilder<Trigger> triggerBuilder = TriggerBuilder.newTrigger();

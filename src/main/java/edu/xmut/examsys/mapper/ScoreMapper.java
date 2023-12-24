@@ -27,6 +27,12 @@ public interface ScoreMapper {
     Page<Score> selectByUserId(long userId);
 
     int insert(Score score);
+
+    Score selectByUserIdAndExamId(
+            @Param("userId")
+            Long userId,
+            @Param("examId")
+            Long examId);
 }
 
 

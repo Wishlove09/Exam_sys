@@ -1,5 +1,7 @@
 package edu.xmut.examsys.job;
+
 import java.util.Date;
+import java.util.Objects;
 
 import cn.hutool.core.date.DateUtil;
 import edu.xmut.examsys.bean.Score;
@@ -27,11 +29,14 @@ public class SynchronizeGradeResultsJob implements Job {
         Long examId = (Long) jobDataMap.get("examId");
         Long userId = (Long) jobDataMap.get("userId");
         Date submitDate = (Date) jobDataMap.get("submitDate");
-
-        Score score = new Score();
+        Score score = scoreMapper.selectByUserIdAndExamId(userId, examId);
+        if (Objects.nonNull(score) && score.getResultScore().equals(totalScore)) {
+            return;
+        }
+        score = new Score();
         score.setExamId(examId);
         score.setUserId(userId);
-        score.setResultscore(totalScore);
+        score.setResultScore(totalScore);
         score.setSubmitData(submitDate);
         int result = scoreMapper.insert(score);
         if (result > 0) {
