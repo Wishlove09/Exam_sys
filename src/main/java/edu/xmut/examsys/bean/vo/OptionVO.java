@@ -10,4 +10,6 @@ public class OptionVO {
     private String id;
     private String content;
     private String image;
+
+    private Integer spaceNumber;
 }

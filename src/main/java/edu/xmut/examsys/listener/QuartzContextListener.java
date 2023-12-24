@@ -43,11 +43,7 @@ public class QuartzContextListener implements ServletContextListener {
             Trigger trigger = TriggerBuilder.newTrigger()
                     .withIdentity("trigger1")
                     .withSchedule(CronScheduleBuilder
-                            .cronSchedule("0 0/1 * * * ? *")) // 表示每1分钟 执行任务
-                    // .withSchedule(SimpleScheduleBuilder
-                    //         .simpleSchedule()
-                    //         .withIntervalInSeconds(60)
-                    //         .repeatForever())
+                            .cronSchedule("0 0 0 * * ?")) // 表示每1分钟 执行任务
                     .build();
             // 交由Scheduler安排触发
             scheduler.scheduleJob(job, trigger);
@@ -62,7 +58,6 @@ public class QuartzContextListener implements ServletContextListener {
     private void initMapper() {
         SqlSession sqlSession = SqlSessionFactoryUtils.openSession(true);
         examInfoMapper = sqlSession.getMapper(ExamInfoMapper.class);
-
     }
 
     @Override
@@ -73,7 +68,6 @@ public class QuartzContextListener implements ServletContextListener {
             scheduler.shutdown();
         } catch (SchedulerException e) {
             logger.error(e.getMessage(), e);
-
         }
 
     }

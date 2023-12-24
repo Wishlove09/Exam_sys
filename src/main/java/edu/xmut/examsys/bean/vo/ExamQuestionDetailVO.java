@@ -17,6 +17,7 @@ public class ExamQuestionDetailVO {
 
     private String id;
     private String content;
+    private List<String> contents;
     private Integer type;
     private Integer level;
     private String image;

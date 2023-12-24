@@ -314,13 +314,23 @@ public class ExamServiceImpl implements ExamService {
         examQuestionDetailVO.setType(question.getType());
         examQuestionDetailVO.setLevel(question.getLevel());
         examQuestionDetailVO.setImage(question.getImage());
-        examQuestionDetailVO.setContent(question.getContent());
+        if (question.getType().equals(3)) {
+            String[] split = question.getContent().split("[()（）]");
+            examQuestionDetailVO.setContents(Arrays.asList(split));
+        } else {
+            examQuestionDetailVO.setContent(question.getContent());
+        }
 
         List<QuestionOption> optionList = questionOptionMapper.selectByQid(qid);
         List<OptionVO> collect = optionList.stream().map(questionOption -> {
             OptionVO optionVO = new OptionVO();
-            optionVO.setId(questionOption.getId());
-            optionVO.setContent(questionOption.getContent());
+            if (question.getType().equals(3)) {
+                List<String> strings = JSONArray.parseArray(questionOption.getContent(), String.class);
+                optionVO.setSpaceNumber(strings.size());
+            } else {
+                optionVO.setContent(questionOption.getContent());
+                optionVO.setId(questionOption.getId());
+            }
             optionVO.setImage(questionOption.getImage());
             return optionVO;
         }).collect(Collectors.toList());
@@ -363,6 +373,9 @@ public class ExamServiceImpl implements ExamService {
         ExamAnswerRecord examAnswerRecord = examAnswerRecordMapper.selectByExamIdAndPaperIdAndUserIdAndQId(examAnsweredQueryDTO.getExamId(), examAnsweredQueryDTO.getPaperId(),
                 examAnsweredQueryDTO.getQId(), UserUtils.getUserId(request));
         BeanUtil.copyProperties(examAnswerRecord, examAnsweredVO);
+        if (Objects.isNull(examAnswerRecord)) {
+            return null;
+        }
         if (examAnswerRecord.getQuestionType().equals(1)) {
             List<String> ids = JSONArray.parseArray(examAnswerRecord.getOptionId(), String.class);
             examAnsweredVO.setOptionId(null);
