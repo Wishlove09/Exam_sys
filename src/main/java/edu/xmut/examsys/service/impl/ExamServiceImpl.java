@@ -97,12 +97,33 @@ public class ExamServiceImpl implements ExamService {
                 .build();
     }
 
+    /**
+     * 添加一场考试
+     *
+     * @param examAddDTO
+     * @param request
+     * @return
+     */
     @Override
     public Boolean addExam(ExamAddDTO examAddDTO, HttpServletRequest request) {
 
         ExamInfo examInfo = new ExamInfo();
         BeanUtil.copyProperties(examAddDTO, examInfo);
         examInfo.setExamId(System.currentTimeMillis());
+
+        JSONObject jsonObject = new JSONObject();
+        Boolean timeLimit = examAddDTO.getTimeLimit();
+        Boolean isFaceCheck = examAddDTO.getIsFaceCheck();
+
+        if (timeLimit) {
+            Integer tryCount = examAddDTO.getTryCount();
+            jsonObject.put("timeLimit", tryCount);
+        }
+        if (isFaceCheck) {
+            jsonObject.put("isFaceCheck", true);
+        }
+        // 添加扩展参数
+        examInfo.setParams(jsonObject.toJSONString());
 
         Long userId = UserUtils.getUserId(request);
         examInfo.setCreator(userId);
@@ -111,6 +132,7 @@ public class ExamServiceImpl implements ExamService {
         Date end = examAddDTO.getExamDate().get(1);
         examInfo.setStartTime(start);
         examInfo.setEndTime(end);
+
         int rangeDate = DateTimeUtils.isRangeDate(start, end);
         if (rangeDate != -1) {
             examInfo.setStatus(DateTimeUtils.isRangeDate(start, end));
@@ -144,11 +166,10 @@ public class ExamServiceImpl implements ExamService {
                 }
             }
         }
-        Integer r = examInfoMapper.insert(examInfo);
 
+        Integer r = examInfoMapper.insert(examInfo);
         Integer r2 = examParticipantsMapper.insertBatch(examInfo.getExamId(), examAddDTO.getCrowds());
 
-        // sqlSessionTemplate.commit();
 
         return r > 0 && r2 > 0;
     }
@@ -186,7 +207,20 @@ public class ExamServiceImpl implements ExamService {
                     ExamInfoVO examInfoVO = new ExamInfoVO();
                     BeanUtil.copyProperties(examInfo, examInfoVO);
                     return examInfoVO;
-                }).collect(Collectors.toList());
+                })
+                .sorted((o1, o2) -> {
+                    // 如果o1状态为1，则o1排在o2前面
+                    if (o1.getStatus().equals(1) && !o2.getStatus().equals(1)) {
+                        return -1;
+                    } else if (o2.getStatus().equals(1) && !o1.getStatus().equals(1)) {
+                        // 如果o2状态为1，o1排在o2后面
+                        return 1;
+                    } else {
+                        // 默认排序
+                        return Integer.compare(o1.getStatus(), o2.getStatus());
+                    }
+                })
+                .collect(Collectors.toList());
 
         return PageVO.builder()
                 .pageNum(page.getPageNum())
@@ -196,6 +230,12 @@ public class ExamServiceImpl implements ExamService {
                 .build();
     }
 
+    /**
+     * 获取考试详情信息
+     *
+     * @param examId
+     * @return
+     */
     @Override
     public ExamDetailsVO getDetailsById(String examId) {
 
@@ -203,6 +243,11 @@ public class ExamServiceImpl implements ExamService {
 
         ExamInfo examInfo = examInfoMapper.selectById(Long.valueOf(examId));
         BeanUtil.copyProperties(examInfo, examDetailsVO);
+        if (Objects.nonNull(examInfo.getParams())) {
+            JSONObject jsonObject = JSONObject.parseObject(examInfo.getParams());
+            examDetailsVO.setIsFaceCheck(jsonObject.getBoolean("isFaceCheck"));
+            examDetailsVO.setTryCount(jsonObject.getInteger("tryCount"));
+        }
 
         PaperInfo paperInfo = paperInfoMapper.selectById(examInfo.getPaperId());
         examDetailsVO.setPaperInfo(paperInfo);

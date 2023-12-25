@@ -58,7 +58,6 @@ public class JobServiceImpl implements JobService {
 
             SimpleScheduleBuilder simpleScheduleBuilder = SimpleScheduleBuilder.simpleSchedule()
                     .withIntervalInSeconds(3)   // 每3秒执行一次
-                    // .repeatForever();
                     .withRepeatCount(1);    // 总共执行2次
 
             // trigger
@@ -91,6 +90,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public Boolean addCronJob(Class<? extends Job> jobClass, String jobName, String cron, JobDataMap data) {
+
         return null;
     }
 

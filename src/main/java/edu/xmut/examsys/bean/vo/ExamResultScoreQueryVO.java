@@ -18,7 +18,7 @@ public class ExamResultScoreQueryVO {
     /**
      * 得分
      */
-    private Integer resultscore;
+    private Integer resultScore;
 
     /**
      * 提交日期

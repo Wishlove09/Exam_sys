@@ -42,6 +42,10 @@ public class R<T> {
         return new R(400, message, null);
     }
 
+    public static <T> R fail(T data) {
+        return new R(400, "失败", data);
+    }
+
 
     public R code(Integer code) {
         this.setCode(code);

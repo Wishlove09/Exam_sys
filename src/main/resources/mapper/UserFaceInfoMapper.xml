@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.xmut.examsys.mapper.UserFaceInfoMapper">
+
+    <resultMap id="BaseResultMap" type="edu.xmut.examsys.bean.UserFaceInfo">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="userId" column="user_id" jdbcType="BIGINT"/>
+            <result property="faceId" column="face_id" jdbcType="VARCHAR"/>
+            <result property="faceImage" column="face_image" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <insert id="insert">
+        insert into user_face_info (user_id, face_id, face_feature, face_image)
+        values (#{userId}, #{faceId}, #{faceFeature}, #{faceImage})
+    </insert>
+
+
+    <select id="getByUserId" resultType="edu.xmut.examsys.bean.vo.FaceUserInfo">
+        select *
+        from user_face_info
+        where user_id = #{userId}
+    </select>
+    <select id="getAllByUserId" resultType="edu.xmut.examsys.bean.UserFaceInfo">
+        select id, user_id, face_id, face_image, create_time, update_time
+        from user_face_info
+        where user_id = #{userId}
+    </select>
+</mapper>

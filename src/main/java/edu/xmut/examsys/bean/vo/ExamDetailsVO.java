@@ -73,9 +73,14 @@ public class ExamDetailsVO implements Serializable {
     private String totalScore;
 
     /**
-     * 扩展参数
+     * 是否开启人脸识别
      */
-    private String params;
+    private Boolean isFaceCheck;
+
+    /**
+     * 允许尝试次数
+     */
+    private Integer tryCount;
 
 
     private PaperInfo paperInfo;

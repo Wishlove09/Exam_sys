@@ -47,6 +47,9 @@
             <if test="phone !=null">
                 phone = #{phone},
             </if>
+            <if test="password !=null">
+                `password` = #{password},
+            </if>
             <if test="status !=null">
                 `status` = #{status}
             </if>

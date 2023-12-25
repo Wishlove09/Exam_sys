@@ -4,6 +4,8 @@ import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.JSONPath;
+import edu.xmut.examsys.bean.dto.ChangePwdDTO;
+import edu.xmut.examsys.bean.dto.FaceSearchResDto;
 import edu.xmut.examsys.bean.dto.PageDTO;
 import edu.xmut.examsys.bean.dto.StudentDTO;
 import edu.xmut.examsys.bean.vo.PageVO;
@@ -48,7 +50,6 @@ public class StudentController {
         Long id = Long.valueOf(request.getParameter("id"));
         StudentVO studentVO = studentService.getById(id);
 
-
         return R.ok(studentVO);
     }
 
@@ -68,5 +69,14 @@ public class StudentController {
         Long id = Long.valueOf(request.getParameter("id"));
         Boolean result = studentService.updateStatus(id);
         return result ? R.ok() : R.fail();
+    }
+
+    @RequestMapping(value = "/update/pwd", method = "post")
+    public R updatePassword(String json) {
+        if (StringUtils.isBlank(json)) {
+            throw new GlobalException(MISSING_ARGUMENT);
+        }
+        ChangePwdDTO changePwdDTO = JSONObject.parseObject(json, ChangePwdDTO.class);
+        return studentService.updatePwd(changePwdDTO) ? R.ok() : R.fail();
     }
 }

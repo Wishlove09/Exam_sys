@@ -21,6 +21,8 @@ public class ExamAddDTO {
     private Integer totalTime;
     private Integer totalScore;
     private Boolean timeLimit;
+    private Boolean isFaceCheck;
+    private Integer tryCount;
     private List<Long> crowds;
     private List<Date> examDate;
 }

@@ -54,5 +54,6 @@
         <mapper resource="mapper/ScoreMapper.xml"/>
         <mapper resource="mapper/UserWrongBookMapper.xml"/>
         <mapper resource="mapper/SubjectMapper.xml"/>
+        <mapper resource="mapper/UserFaceInfoMapper.xml"/>
     </mappers>
 </configuration>

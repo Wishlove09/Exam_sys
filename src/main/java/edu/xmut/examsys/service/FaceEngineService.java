@@ -3,6 +3,8 @@ package edu.xmut.examsys.service;
 import com.arcsoft.face.FaceInfo;
 import com.arcsoft.face.toolkit.ImageInfo;
 import edu.xmut.examsys.bean.User;
+import edu.xmut.examsys.bean.UserFaceInfo;
+import edu.xmut.examsys.bean.dto.ProcessInfo;
 import edu.xmut.examsys.bean.vo.FaceUserInfo;
 
 import java.util.List;
@@ -15,7 +17,7 @@ import java.util.concurrent.ExecutionException;
 public interface FaceEngineService {
     List<FaceInfo> detectFaces(ImageInfo imageInfo);
 
-    List<User> process(ImageInfo imageInfo);
+    List<ProcessInfo> process(ImageInfo imageInfo);
 
     /**
      * 人脸特征
@@ -26,11 +28,14 @@ public interface FaceEngineService {
 
     /**
      * 人脸比对
-     * @param groupId
+     * @param userId
      * @param faceFeature
      * @return
      */
-    List<FaceUserInfo> compareFaceFeature(byte[] faceFeature, Integer groupId) throws InterruptedException, ExecutionException;
+    List<FaceUserInfo> compareFaceFeature(byte[] faceFeature, Long userId) throws InterruptedException, ExecutionException;
 
 
+    void addFace(UserFaceInfo userFaceInfo);
+
+    List<UserFaceInfo> getFaceInfo(Long userId);
 }

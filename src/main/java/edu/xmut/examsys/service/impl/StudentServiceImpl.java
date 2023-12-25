@@ -7,6 +7,7 @@ import com.github.pagehelper.PageHelper;
 import edu.xmut.examsys.bean.Clazz;
 import edu.xmut.examsys.bean.ClazzStudent;
 import edu.xmut.examsys.bean.User;
+import edu.xmut.examsys.bean.dto.ChangePwdDTO;
 import edu.xmut.examsys.bean.dto.PageDTO;
 import edu.xmut.examsys.bean.dto.StudentDTO;
 import edu.xmut.examsys.bean.vo.PageVO;
@@ -15,10 +16,12 @@ import edu.xmut.examsys.exception.GlobalException;
 import edu.xmut.examsys.mapper.ClazzMapper;
 import edu.xmut.examsys.mapper.UserMapper;
 import edu.xmut.examsys.service.StudentService;
+import edu.xmut.examsys.utils.MD5Utils;
 import edu.xmut.examsys.utils.SqlSessionFactoryUtils;
 import fun.shuofeng.myspringmvc.annotaion.Service;
 import org.apache.commons.lang3.time.DateUtils;
 
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.util.List;
 import java.util.Objects;
@@ -125,6 +128,20 @@ public class StudentServiceImpl implements StudentService {
         }
         Integer result = userMapper.update(u);
         return result > 0;
+    }
+
+    @Override
+    public boolean updatePwd(ChangePwdDTO changePwdDTO) {
+        User user = new User();
+        user.setId(Long.valueOf(changePwdDTO.getUserId()));
+        try {
+            String encrypt = MD5Utils.toMD5(changePwdDTO.getPwd());
+            user.setPassword(encrypt);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+
+        return userMapper.update(user) > 0;
     }
 
 

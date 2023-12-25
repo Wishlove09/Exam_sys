@@ -2,6 +2,7 @@ package edu.xmut.examsys.service;
 
 import com.github.pagehelper.Page;
 import edu.xmut.examsys.bean.User;
+import edu.xmut.examsys.bean.dto.ChangePwdDTO;
 import edu.xmut.examsys.bean.dto.PageDTO;
 import edu.xmut.examsys.bean.dto.StudentDTO;
 import edu.xmut.examsys.bean.vo.PageVO;
@@ -20,4 +21,6 @@ public interface StudentService {
     Boolean update(StudentDTO studentDTO);
 
     Boolean updateStatus(Long id);
+
+    boolean updatePwd(ChangePwdDTO changePwdDTO);
 }
